@@ -1,0 +1,844 @@
+{
+  "ConceptSets": [
+    {
+      "id": 0,
+      "name": "[OMOP_SEPSIS] Sepsis - no descendants",
+      "expression": {
+        "items": [
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "91302008",
+              "CONCEPT_ID": 132797,
+              "CONCEPT_NAME": "Sepsis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "76571007",
+              "CONCEPT_ID": 196236,
+              "CONCEPT_NAME": "Septic shock",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "1036671000000106",
+              "CONCEPT_ID": 37394658,
+              "CONCEPT_NAME": "Severe sepsis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 1,
+      "name": "[OMOP_SEPSI] Infezioni",
+      "expression": {
+        "items": [
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "5758002",
+              "CONCEPT_ID": 132736,
+              "CONCEPT_NAME": "Bacteremia",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "63553008",
+              "CONCEPT_ID": 433415,
+              "CONCEPT_NAME": "Candidal endocarditis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "15628003",
+              "CONCEPT_ID": 433417,
+              "CONCEPT_NAME": "Gonorrhea",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "70572005",
+              "CONCEPT_ID": 438077,
+              "CONCEPT_NAME": "Invasive candidiasis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "4089001",
+              "CONCEPT_ID": 133691,
+              "CONCEPT_NAME": "Meningococcemia",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "3218000",
+              "CONCEPT_ID": 433701,
+              "CONCEPT_NAME": "Mycosis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "91302008",
+              "CONCEPT_ID": 132797,
+              "CONCEPT_NAME": "Sepsis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "447843005",
+              "CONCEPT_ID": 40486631,
+              "CONCEPT_NAME": "Sepsis due to anaerobic bacteria",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "449082003",
+              "CONCEPT_ID": 40493038,
+              "CONCEPT_NAME": "Sepsis due to Gram negative bacteria",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "448784003",
+              "CONCEPT_ID": 40491523,
+              "CONCEPT_NAME": "Sepsis due to herpes simplex",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "449083008",
+              "CONCEPT_ID": 40493039,
+              "CONCEPT_NAME": "Sepsis due to Salmonella",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "447894003",
+              "CONCEPT_ID": 40487059,
+              "CONCEPT_NAME": "Sepsis due to Staphylococcus",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "448418006",
+              "CONCEPT_ID": 40489908,
+              "CONCEPT_NAME": "Sepsis due to Streptococcus",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "448421008",
+              "CONCEPT_ID": 40489912,
+              "CONCEPT_NAME": "Sepsis due to Streptococcus pneumoniae",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "9012003",
+              "CONCEPT_ID": 442137,
+              "CONCEPT_NAME": "Septicemic plague",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "36102002",
+              "CONCEPT_ID": 434275,
+              "CONCEPT_NAME": "Waterhouse-Friderichsen syndrome",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "name": "[OMOP_SEPSIS] Disfunzione organi",
+      "expression": {
+        "items": [
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "386813002",
+              "CONCEPT_ID": 4305080,
+              "CONCEPT_NAME": "Abnormal breathing",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "51387008",
+              "CONCEPT_ID": 435517,
+              "CONCEPT_NAME": "Acidosis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "19351000",
+              "CONCEPT_ID": 435308,
+              "CONCEPT_NAME": "Acute glomerulonephritis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "67905004",
+              "CONCEPT_ID": 312940,
+              "CONCEPT_NAME": "Acute-on-chronic respiratory failure",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "429224003",
+              "CONCEPT_ID": 197329,
+              "CONCEPT_NAME": "Acute renal failure due to acute cortical necrosis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "14669001",
+              "CONCEPT_ID": 197320,
+              "CONCEPT_NAME": "Acute renal failure syndrome",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "298015003",
+              "CONCEPT_ID": 432961,
+              "CONCEPT_NAME": "Acute renal papillary necrosis with renal failure",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "65710008",
+              "CONCEPT_ID": 319049,
+              "CONCEPT_NAME": "Acute respiratory failure",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "35455006",
+              "CONCEPT_ID": 444044,
+              "CONCEPT_NAME": "Acute tubular necrosis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "389098007",
+              "CONCEPT_ID": 377845,
+              "CONCEPT_NAME": "Anoxic encephalopathy",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "64779008",
+              "CONCEPT_ID": 432585,
+              "CONCEPT_NAME": "Blood coagulation disorder",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "89138009",
+              "CONCEPT_ID": 198571,
+              "CONCEPT_NAME": "Cardiogenic shock",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "371632003",
+              "CONCEPT_ID": 380834,
+              "CONCEPT_NAME": "Coma",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "230594005",
+              "CONCEPT_ID": 374032,
+              "CONCEPT_NAME": "Critical illness polyneuropathy",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "81308009",
+              "CONCEPT_ID": 372887,
+              "CONCEPT_NAME": "Disorder of brain",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "67406007",
+              "CONCEPT_ID": 436093,
+              "CONCEPT_NAME": "Disseminated intravascular coagulation",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "3006004",
+              "CONCEPT_ID": 376961,
+              "CONCEPT_NAME": "Disturbance of consciousness",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Procedure",
+              "CONCEPT_CODE": "54550000",
+              "CONCEPT_ID": 4181917,
+              "CONCEPT_NAME": "Electroencephalogram",
+              "DOMAIN_ID": "Procedure",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Procedure",
+              "CONCEPT_CODE": "302497006",
+              "CONCEPT_ID": 4120120,
+              "CONCEPT_NAME": "Hemodialysis",
+              "DOMAIN_ID": "Procedure",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "13920009",
+              "CONCEPT_ID": 4029488,
+              "CONCEPT_NAME": "Hepatic encephalopathy",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "87248009",
+              "CONCEPT_ID": 4337543,
+              "CONCEPT_NAME": "Hepatic necrosis",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "128241005",
+              "CONCEPT_ID": 194990,
+              "CONCEPT_NAME": "Inflammatory disease of liver",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "3-dig nonbill code",
+              "CONCEPT_CODE": "96.7",
+              "CONCEPT_ID": 2008006,
+              "CONCEPT_NAME": "Other continuous invasive mechanical ventilation",
+              "DOMAIN_ID": "Procedure",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "ICD9Proc"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "267534000",
+              "CONCEPT_ID": 441264,
+              "CONCEPT_NAME": "Primary thrombocytopenia",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "87317003",
+              "CONCEPT_ID": 317109,
+              "CONCEPT_NAME": "Respiratory arrest",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "409623005",
+              "CONCEPT_ID": 318459,
+              "CONCEPT_NAME": "Respiratory insufficiency",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "154826009",
+              "CONCEPT_ID": 40321716,
+              "CONCEPT_NAME": "Secondary thrombocytopenia",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "76571007",
+              "CONCEPT_ID": 196236,
+              "CONCEPT_NAME": "Septic shock",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "27942005",
+              "CONCEPT_ID": 201965,
+              "CONCEPT_NAME": "Shock",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "302215000",
+              "CONCEPT_ID": 432870,
+              "CONCEPT_NAME": "Thrombocytopenic disorder",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "428703001",
+              "CONCEPT_ID": 443586,
+              "CONCEPT_NAME": "Transient organic mental disorder",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          },
+          {
+            "concept": {
+              "CONCEPT_CLASS_ID": "Clinical Finding",
+              "CONCEPT_CODE": "266370006",
+              "CONCEPT_ID": 261881,
+              "CONCEPT_NAME": "Trauma and postoperative pulmonary insufficiency",
+              "DOMAIN_ID": "Condition",
+              "INVALID_REASON": "V",
+              "INVALID_REASON_CAPTION": "Valid",
+              "STANDARD_CONCEPT": "S",
+              "STANDARD_CONCEPT_CAPTION": "Standard",
+              "VOCABULARY_ID": "SNOMED"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "PrimaryCriteria": {
+    "CriteriaList": [
+      {
+        "ConditionOccurrence": {
+          "CodesetId": 0,
+          "OccurrenceStartDate": {
+            "Value": "2020-01-01",
+            "Extent": "2022-12-31",
+            "Op": "bt"
+          }
+        }
+      },
+      {
+        "ConditionOccurrence": {
+          "CorrelatedCriteria": {
+            "Type": "ANY",
+            "CriteriaList": [
+              {
+                "Criteria": {
+                  "ConditionOccurrence": {
+                    "CodesetId": 2
+                  }
+                },
+                "StartWindow": {
+                  "Start": {
+                    "Days": 7,
+                    "Coeff": -1
+                  },
+                  "End": {
+                    "Days": 7,
+                    "Coeff": 1
+                  },
+                  "UseEventEnd": false
+                },
+                "Occurrence": {
+                  "Type": 2,
+                  "Count": 1
+                }
+              },
+              {
+                "Criteria": {
+                  "ProcedureOccurrence": {
+                    "CodesetId": 2
+                  }
+                },
+                "StartWindow": {
+                  "Start": {
+                    "Days": 7,
+                    "Coeff": -1
+                  },
+                  "End": {
+                    "Days": 7,
+                    "Coeff": 1
+                  },
+                  "UseEventEnd": false
+                },
+                "Occurrence": {
+                  "Type": 2,
+                  "Count": 1
+                }
+              }
+            ],
+            "DemographicCriteriaList": [],
+            "Groups": []
+          },
+          "CodesetId": 1,
+          "OccurrenceStartDate": {
+            "Value": "2020-01-01",
+            "Extent": "2022-12-31",
+            "Op": "bt"
+          }
+        }
+      }
+    ],
+    "ObservationWindow": {
+      "PriorDays": 0,
+      "PostDays": 0
+    },
+    "PrimaryCriteriaLimit": {
+      "Type": "All"
+    }
+  },
+  "QualifiedLimit": {
+    "Type": "First"
+  },
+  "ExpressionLimit": {
+    "Type": "All"
+  },
+  "InclusionRules": [],
+  "EndStrategy": {
+    "DateOffset": {
+      "DateField": "StartDate",
+      "Offset": 7
+    }
+  },
+  "CensoringCriteria": [],
+  "CollapseSettings": {
+    "CollapseType": "ERA",
+    "EraPad": 0
+  },
+  "CensorWindow": {},
+  "cdmVersionRange": ">=5.0.0"
+}
