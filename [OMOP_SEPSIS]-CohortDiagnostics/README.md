@@ -28,9 +28,9 @@ Una volta inserite le informazioni richieste, eseguire lo script **RunAnalysis.R
 Questo passaggio è facoltativo se vuoi esaminare i risultati ottenuti prima di inviarli al centro coordinatore.
 
 Lo script **DiagnosticsExplorer.R** contiene una Shiny app per visualizzare i risultati del CohortDiagnostics. Per avviare l'applicazione, seguire i seguenti passaggi:
-1 - creare una cartella dal nome **data** all'interno della cartella di lavoro ([OMOP_SEPSIS]-CohortDiagnostics);
-2 - copiare all'interno della cartella appena creata il file zip **abc.zip**, contenente i risultati del CohortDiagnostics;
-3 - eseguire lo script **DiagnosticsExplorer.R**.
+1. creare una cartella dal nome **data** all'interno della cartella di lavoro ([OMOP_SEPSIS]-CohortDiagnostics);
+2. copiare all'interno della cartella appena creata il file zip **abc.zip**, contenente i risultati del CohortDiagnostics;
+3. eseguire lo script **DiagnosticsExplorer.R**.
 
 ## Condivisione dei risultati
 Al termine delle analisi, se tutto avrà funzionato correttamente, ogni centro avrà a disposizione il file **abc.zip**.
