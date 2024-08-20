@@ -27,7 +27,16 @@ Ogni cartella contiene il codice per eseguire le analisi della corrispondente fa
 
 ### Flusso di lavoro
 
+Lo studio è diviso in due fasi principali:
+1. esecuzione del tool CohortDiagnostics, per valutare le coorti incluse nello studio e la disponibilità dei dati nei centri partecipanti;
+2. validazione del modello predittivo, sviluppato in precedenza dal centro coordinatore Fondazione IRCCS Policlinico San Matteo di Pavia, in collaborazione con l’Università di Pavia (UNIPV).
 
+L'inizio di ognuna delle fasi è comunicato tramite e-mail dal centro coordinatore, in collaborazione con UNIPV.
+
+Dopo la ricezione della prima e-mail, avrà inizio la fase 1 dello studio. Il codice che deve essere eseguito durante questa fase è quello che si trova all'interno della cartella [OMOP_SEPSIS]-CohortDiagnostics. 
+Una volta che il codice è stato eseguito e i risultati condivisi, secondo le modalità comunicate dal coordinatore, si dovrà attendere la ricezione della seconda e-mail prima di procedere con la fase 2. 
+
+Dopo aver ricevuto la seconda e-mail da parte del centro coordinatore, si potrà procedere con l'esecuzione del codice contenuto nella cartella [OMOP_SEPSIS]-PLPAnalysis.
 
 ## Problemi
 
