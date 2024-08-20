@@ -20,8 +20,8 @@ Dopo aver installato e verificato la corretta installazione dei tool richiesti, 
 * clonare il repository utilizzando git.
 
 Il repository contiene due cartelle principali:
-* CohortDiagnostics
-* PLPAnalysis
+* [OMOP_SEPSIS]-CohortDiagnostics
+* [OMOP_SEPSIS]-PLPAnalysis
 
 Ogni cartella contiene il codice per eseguire le analisi della corrispondente fase dello studio. All'interno di ogni cartella è presente un file README.md, che contiene le istruzioni dettagliate per eseguire correttamente il codice.
 
