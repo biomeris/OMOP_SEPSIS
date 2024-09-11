@@ -42,7 +42,7 @@ CohortDiagnostics::executeDiagnostics(cohortDefinitionSet,
                                       cdmDatabaseSchema = cdmDatabaseSchema,
                                       exportFolder = outputFolder,
                                       databaseId = databaseId,
-                                      minCellCount = 0 #ragionarci su rivedendo dpia????
+                                      minCellCount = 30
 )
 
 # Clean up temporary tables
