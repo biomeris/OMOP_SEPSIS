@@ -1,7 +1,7 @@
 
 # [OMOP_SEPSIS]-CohortDiagnostics
 
-Questo repository contiene il codice per eseguire la fase 1 dello studio, ovvero CohortDiagnostics.
+Questo repository contiene il codice per eseguire la prima parte della fase 1 dello studio, ovvero CohortDiagnostics.
 
 Si prega di seguire le istruzioni sotto riportate per eseguire correttamente le analisi necessarie.
 

@@ -1,0 +1,32 @@
+
+# [OMOP_SEPSIS]-PredictorVariables
+
+Questo repository contiene il codice per eseguire la seconda parte della fase 1 dello studio, che consiste nella valutazione dei predittori ritenuti di interesse per lo studio.
+
+Si prega di seguire le istruzioni sotto riportate per eseguire correttamente le analisi necessarie.
+
+## Istruzioni
+Una volta scaricato il contenuto del repository, aprire il file **[OMOP_SEPSIS]-PredictorVariables.Rproj** utilizzando RStudio e procedere con le operazioni elencate sotto.
+
+### Creazione della libreria per il progetto e sincronizzazione dei pacchetti R necessari
+
+Prima di avviare le analisi, è fondamentale verificare che tutti i pacchetti R necessari siano installati. Inoltre, è essenziale che ogni centro utilizzi la stessa versione dei pacchetti R per garantire la comparabilità dei risultati.
+
+Per garantire l'installazione corretta dei pacchetti nella versione richiesta è necessario eseguire il codice contenuto nel file **CreateProjectLibrary.R**. 
+
+Questo script deve essere eseguito una sola volta, prima dell'avvio della prima esecuzione dell'analisi vera e propria.
+
+### Esecuzione delle analisi
+
+L'unico file che richiede modifiche è il file **RunAnalysis.R**. Si prega di compilarlo con tutte le informazioni necessarie, adattandole alla propria situazione prima di eseguire le analisi. Le informazioni inserite saranno poi necessarie per la connessione al database e l'esecuzione delle analisi.
+
+Per garantire la corretta esecuzione, si prega di non apportare modifiche agli altri file contenuti nella cartella.
+
+Una volta inserite le informazioni richieste, eseguire lo script **RunAnalysis.R** per ottenere i risultati richiesti.
+
+## Condivisione dei risultati
+Al termine delle analisi, se tutto avrà funzionato correttamente, ogni centro avrà a disposizione il file ***databaseId*-predittori.xlsx**.
+
+Il file elencato, dovrà essere condiviso con il centro coordinatore secondo le modalità comunicate.
+
+Grazie!
