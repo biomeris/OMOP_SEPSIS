@@ -39,7 +39,7 @@ renderTranslateExecuteSql(connection = conn,
                           cohort_id = cohortId)
 
 # Predictor variables counts ----
-count_predictors_db <- dplyr::tbl(conn, in_schema("results_cdm", "omop_sepsis_covariates"))
+count_predictors_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_covariates"))
 
 # Numero di ricoveri
 n_ricoveri <- count_predictors_db %>%
@@ -402,7 +402,7 @@ predictors[["pcr"]] <- count_predictors_db %>%
   mutate(perc = round(n / n_ricoveri, digits = 2))
 
 # Gruppi di diagnosi
-count_diag_db <- dplyr::tbl(conn, in_schema("results_cdm", "omop_sepsis_icd9_diagnosis")) %>%
+count_diag_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_icd9_diagnosis")) %>%
   group_by(icd9_group, icd9_group_name) %>%
   count() %>%
   arrange(desc(n)) %>%
