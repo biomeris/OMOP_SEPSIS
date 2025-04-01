@@ -201,7 +201,7 @@ hgb_base AS (
 					FROM
 						@vocabulary_schema.concept c
 						JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
-						AND ca.ancestor_concept_id IN (4153000, 37029074) -- Hemoglobin
+						AND ca.ancestor_concept_id IN (4153000, 37029074, 37072252) -- Hemoglobin
 						AND c.invalid_reason IS NULL
 						AND c.domain_id = 'Measurement'
 				)
@@ -241,7 +241,7 @@ hgb_post AS (
 					FROM
 						@vocabulary_schema.concept c
 						JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
-						AND ca.ancestor_concept_id IN (4153000, 37029074) -- Hemoglobin
+						AND ca.ancestor_concept_id IN (4153000, 37029074, 37072252) -- Hemoglobin
 						AND c.invalid_reason IS NULL
 						AND c.domain_id = 'Measurement'
 				)
