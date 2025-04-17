@@ -1,5 +1,6 @@
 cohortTable <- "OMOP_SEPSIS_cohort_diagn_results" #Prefix for table created by the analysis
-cohortId <- 2 #Cohort ID
+cohortIdRicoveri <- 2 #Cohort ID Ricoveri
+cohortIdSepsi <- 1 #Cohort ID Sepsi
 
 # Define output folder ----
 outputFolder <- here::here("OMOP_SEPSIS_results_PredictorVariables")   
@@ -15,7 +16,7 @@ conn <- connect(connectionDetails = connectionDetails)
 
 # Extract covariates ----
 # Diagnosis groups (ICD9 codes)
-sqlFile <- "gruppi-id9cm.sql"
+sqlFile <- "gruppi-id9cm_sepsi.sql"
 sql <- readChar(file.path(sqlFolder, sqlFile), file.info(file.path(sqlFolder, sqlFile))$size)
 
 renderTranslateExecuteSql(connection = conn, 
@@ -24,10 +25,11 @@ renderTranslateExecuteSql(connection = conn,
                           results_schema = resultsDatabaseSchema,
                           vocabulary_schema = cdmDatabaseSchema,
                           cohort_table = cohortTable,
-                          cohort_id = cohortId)
+                          cohort_id_ricoveri = cohortIdRicoveri,
+                          cohort_id_sepsi = cohortIdSepsi)
 
 # Other predictors
-sqlFile <- "estrazione_covariate.sql"
+sqlFile <- "estrazione_covariate_sepsi.sql"
 sql <- readChar(file.path(sqlFolder, sqlFile), file.info(file.path(sqlFolder, sqlFile))$size)
 
 renderTranslateExecuteSql(connection = conn, 
@@ -36,7 +38,8 @@ renderTranslateExecuteSql(connection = conn,
                           results_schema = resultsDatabaseSchema,
                           vocabulary_schema = cdmDatabaseSchema,
                           cohort_table = cohortTable,
-                          cohort_id = cohortId)
+                          cohort_id_ricoveri = cohortIdRicoveri,
+                          cohort_id_sepsi = cohortIdSepsi)
 
 # Predictor variables counts ----
 count_predictors_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_covariates"))
