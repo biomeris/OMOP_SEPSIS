@@ -29,6 +29,6 @@ Al termine delle analisi, se tutto avrà funzionato correttamente, ogni centro a
 * ***databaseId*-predittori-TUTTI.xlsx**
 * ***databaseId*-predittori-CASI.xlsx**
 
-I file elencato, dovranno essere condivisi con il centro coordinatore secondo le modalità comunicate.
+I file elencati, dovranno essere condivisi con il centro coordinatore secondo le modalità comunicate.
 
 Grazie!
