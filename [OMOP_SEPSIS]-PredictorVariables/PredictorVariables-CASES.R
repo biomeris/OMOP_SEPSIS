@@ -447,3 +447,6 @@ file_name <- file.path(outputFolder, paste(databaseId, "predittori-CASI.xlsx", s
 saveWorkbook(wb, file_name, overwrite = TRUE)
 
 cat(sprintf("%s created in the results folder", file_name))
+cat("*****")
+cat("Done!")
+cat("If everything has run correctly, two Excel files containing your results should now be available in the output folder, ready to share")
