@@ -22,7 +22,7 @@ ricoveri AS (
 	WHERE
 		vo.visit_concept_id IN (9201, 262)
 		AND (vo.visit_end_date - vo.visit_start_date) > 1
-		AND c.cohort_definition_id = @cohort_id
+		AND c.cohort_definition_id = @cohort_id_ricoveri
 ),
 diagnosis_groups AS (
 	SELECT
