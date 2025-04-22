@@ -19,21 +19,24 @@ Dopo aver installato e verificato la corretta installazione dei tool richiesti, 
 * scaricare un file zip contentente il materiale incluso nel repository, oppure
 * clonare il repository utilizzando git.
 
-Il repository contiene due cartelle principali:
+Il repository contiene tre cartelle principali:
 * [OMOP_SEPSIS]-CohortDiagnostics
+* [OMOP_SEPSIS]-PredictorVariables
 * [OMOP_SEPSIS]-PLPAnalysis
 
-Ogni cartella contiene il codice per eseguire le analisi della corrispondente fase dello studio. All'interno di ogni cartella è presente un file README.md, che contiene le istruzioni dettagliate per eseguire correttamente il codice.
+Le prime due cartelle contengono il codice per eseguire le analisi della prima fase dello studio, mentre l'ultima contiene il codice per la seconda fase dello studio, ovvero la validazione del modello predittivo. All'interno di ogni cartella è presente un file README.md, che contiene le istruzioni dettagliate per eseguire correttamente il codice.
 
 ### Flusso di lavoro
 
 Lo studio è diviso in due fasi principali:
-1. esecuzione del tool CohortDiagnostics, per valutare le coorti incluse nello studio e la disponibilità dei dati nei centri partecipanti;
+1. valutazione delle coorti e dei potenziali predittori. Questa prima fase a sua volta consiste in
+    * esecuzione del tool CohortDiagnostics, il cui codice è contenuto nella cartella [OMOP_SEPSIS]-CohortDiagnostics, per valutare le coorti incluse nello studio e la disponibilità dei dati nei centri partecipanti;
+    * esecuzione del codice contenuto nella cartella OMOP_SEPSIS]-PredictorVariables per la valutazione dei potenziali predittori, per definire quali saranno inclusi nello sviluppo del modello;
 2. validazione del modello predittivo, sviluppato in precedenza dal centro coordinatore Fondazione IRCCS Policlinico San Matteo di Pavia, in collaborazione con l’Università di Pavia (UNIPV).
 
 L'inizio di ognuna delle fasi è comunicato tramite e-mail dal centro coordinatore, in collaborazione con UNIPV.
 
-Dopo la ricezione della prima e-mail, avrà inizio la fase 1 dello studio. Il codice che deve essere eseguito durante questa fase è quello che si trova all'interno della cartella [OMOP_SEPSIS]-CohortDiagnostics. 
+Dopo la ricezione della prima e-mail, avrà inizio la fase 1 dello studio. Il codice che deve essere eseguito durante questa fase è quello che si trova all'interno delle cartella [OMOP_SEPSIS]-CohortDiagnostics e OMOP_SEPSIS]-PredictorVariables. 
 Una volta che il codice è stato eseguito e i risultati condivisi, secondo le modalità comunicate dal coordinatore, si dovrà attendere la ricezione della seconda e-mail prima di procedere con la fase 2. 
 
 Dopo aver ricevuto la seconda e-mail da parte del centro coordinatore, si potrà procedere con l'esecuzione del codice contenuto nella cartella [OMOP_SEPSIS]-PLPAnalysis.
