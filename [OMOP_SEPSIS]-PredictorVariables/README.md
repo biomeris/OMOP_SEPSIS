@@ -25,8 +25,10 @@ Per garantire la corretta esecuzione, si prega di non apportare modifiche agli a
 Una volta inserite le informazioni richieste, eseguire lo script **RunAnalysis.R** per ottenere i risultati richiesti.
 
 ## Condivisione dei risultati
-Al termine delle analisi, se tutto avrà funzionato correttamente, ogni centro avrà a disposizione il file ***databaseId*-predittori.xlsx**.
+Al termine delle analisi, se tutto avrà funzionato correttamente, ogni centro avrà a disposizione due file:
+* ***databaseId*-predittori-TUTTI.xlsx**
+* ***databaseId*-predittori-CASI.xlsx**
 
-Il file elencato, dovrà essere condiviso con il centro coordinatore secondo le modalità comunicate.
+I file elencato, dovranno essere condivisi con il centro coordinatore secondo le modalità comunicate.
 
 Grazie!

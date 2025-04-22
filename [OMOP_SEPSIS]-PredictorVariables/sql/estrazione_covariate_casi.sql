@@ -1,4 +1,4 @@
-IF OBJECT_ID('@results_schema.omop_sepsis_covariates', 'U') IS NOT NULL DROP TABLE @results_schema.omop_sepsis_covariates;
+IF OBJECT_ID('@results_schema.omop_sepsis_covariates_cases', 'U') IS NOT NULL DROP TABLE @results_schema.omop_sepsis_covariates_cases;
 
 WITH --- Ricoveri con sepsi
 ricoveri_all AS (
@@ -17,8 +17,8 @@ ricoveri_all AS (
 		AND c.cohort_start_date = vo.visit_start_date
 	WHERE
 		vo.visit_concept_id IN (9201, 262)
-		AND (vo.visit_end_date - vo.visit_start_date) > 1 { @cohort_id_ricoveri != -1 } ? {
-		AND c.cohort_definition_id = @cohort_id_ricoveri }
+		AND (vo.visit_end_date - vo.visit_start_date) > 1
+		AND c.cohort_definition_id = @cohort_id_ricoveri
 ),
 ricoveri AS (
 	SELECT ricoveri_all.*
@@ -2862,7 +2862,7 @@ SELECT
 		pcr_post.measurement_concept_id IS NOT NULL,
 		1,
 		0
-	) AS pcr_post INTO @results_schema.omop_sepsis_covariates
+	) AS pcr_post INTO @results_schema.omop_sepsis_covariates_cases
 FROM
 	ricoveri
 	LEFT JOIN anagrafica ON anagrafica.person_id = ricoveri.person_id

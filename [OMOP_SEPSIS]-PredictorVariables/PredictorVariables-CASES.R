@@ -1,7 +1,8 @@
-cat("[1/2] Performing the analysis on both cases and controls (full dataset)")
+cat("[2/2] Performing the analysis on cases only")
 
 cohortTable <- "OMOP_SEPSIS_cohort_diagn_results" # Prefix for table created by the analysis
 cohortIdRicoveri <- 2 # Cohort ID Ricoveri
+cohortIdSepsi <- 1 # Cohort ID Sepsi
 
 # Define output folder ----
 outputFolder <- here::here("OMOP_SEPSIS_results_PredictorVariables")   
@@ -18,18 +19,20 @@ conn <- connect(connectionDetails = connectionDetails)
 # Extract covariates ----
 cat("Executing query to retrieve candidate predictors...")
 # Diagnosis groups (ICD9 codes)
-sqlFile <- "gruppi-id9cm.sql"
+sqlFile <- "gruppi-id9cm_casi.sql"
 sql <- readChar(file.path(sqlFolder, sqlFile), file.info(file.path(sqlFolder, sqlFile))$size)
+
 renderTranslateExecuteSql(connection = conn, 
                           sql = sql,
                           cdm_schema = cdmDatabaseSchema,
                           results_schema = resultsDatabaseSchema,
                           vocabulary_schema = cdmDatabaseSchema,
                           cohort_table = cohortTable,
-                          cohort_id_ricoveri = cohortIdRicoveri)
+                          cohort_id_ricoveri = cohortIdRicoveri,
+                          cohort_id_sepsi = cohortIdSepsi)
 
 # Other predictors
-sqlFile <- "estrazione_covariate.sql"
+sqlFile <- "estrazione_covariate_casi.sql"
 sql <- readChar(file.path(sqlFolder, sqlFile), file.info(file.path(sqlFolder, sqlFile))$size)
 
 renderTranslateExecuteSql(connection = conn, 
@@ -38,11 +41,12 @@ renderTranslateExecuteSql(connection = conn,
                           results_schema = resultsDatabaseSchema,
                           vocabulary_schema = cdmDatabaseSchema,
                           cohort_table = cohortTable,
-                          cohort_id_ricoveri = cohortIdRicoveri)
+                          cohort_id_ricoveri = cohortIdRicoveri,
+                          cohort_id_sepsi = cohortIdSepsi)
 
 # Predictor variables counts ----
 cat("Counting occurrences and producing the results...")
-count_predictors_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_covariates"))
+count_predictors_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_covariates_cases"))
 
 # Numero di ricoveri
 n_ricoveri <- count_predictors_db %>%
@@ -405,7 +409,7 @@ predictors[["pcr"]] <- count_predictors_db %>%
   mutate(perc = round(n / n_ricoveri, digits = 2))
 
 # Gruppi di diagnosi
-count_diag_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_icd9_diagnosis")) %>%
+count_diag_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_icd9_diagnosis_cases")) %>%
   group_by(icd9_group, icd9_group_name) %>%
   count() %>%
   arrange(desc(n)) %>%
@@ -439,10 +443,7 @@ writeData(wb,sheet = "Comorbidità - gruppi ICD-9-CM", count_diag, borders = "al
           headerStyle = createStyle(border = c("top", "bottom", "left", "right"), borderColour = "#999999", textDecoration = "bold"))
 setColWidths(wb,sheet = "Comorbidità - gruppi ICD-9-CM",cols = 1:ncol(count_diag), widths = "auto")
 
-file_name <- file.path(outputFolder, paste(databaseId, "predittori-TUTTI.xlsx", sep = "-"))
+file_name <- file.path(outputFolder, paste(databaseId, "predittori-CASI.xlsx", sep = "-"))
 saveWorkbook(wb, file_name, overwrite = TRUE)
 
 cat(sprintf("%s created in the results folder", file_name))
-cat("*****")
-cat("Done!")
-cat("If everything has run correctly, two Excel files containing your results should now be available in the output folder, ready to share")
