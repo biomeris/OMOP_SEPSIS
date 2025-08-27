@@ -17,7 +17,8 @@
               "STANDARD_CONCEPT": "S",
               "STANDARD_CONCEPT_CAPTION": "Standard",
               "VOCABULARY_ID": "Visit"
-            }
+            },
+            "includeDescendants": true
           }
         ]
       }
