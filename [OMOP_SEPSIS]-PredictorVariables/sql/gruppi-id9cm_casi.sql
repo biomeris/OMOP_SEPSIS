@@ -20,7 +20,16 @@ ricoveri_all AS (
 		JOIN @results_schema.@cohort_table c ON c.subject_id = vo.person_id
 		AND c.cohort_start_date = vo.visit_start_date
 	WHERE
-		vo.visit_concept_id IN (9201, 262)
+		vo.visit_concept_id IN (
+			SELECT
+				c.concept_id
+			FROM
+				@vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+				AND ca.ancestor_concept_id IN (9201, 262)
+				AND c.invalid_reason IS NULL
+				AND c.domain_id = 'Visit'
+		)
 		AND (vo.visit_end_date - vo.visit_start_date) > 1
 		AND c.cohort_definition_id = @cohort_id_ricoveri
 ),
