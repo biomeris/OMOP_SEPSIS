@@ -17,35 +17,44 @@ sqlFolder <- file.path(here(), "sql")
 conn <- connect(connectionDetails = connectionDetails)
 
 # Extract covariates ----
-cat("Executing query to retrieve candidate predictors...")
+cat("Executing query to retrieve diagnosis groups...")
 # Diagnosis groups (ICD9 codes)
 sqlFile <- "gruppi-id9cm_casi.sql"
 sql <- readChar(file.path(sqlFolder, sqlFile), file.info(file.path(sqlFolder, sqlFile))$size)
 
-renderTranslateExecuteSql(connection = conn, 
-                          sql = sql,
-                          cdm_schema = cdmDatabaseSchema,
-                          results_schema = resultsDatabaseSchema,
-                          vocabulary_schema = cdmDatabaseSchema,
-                          cohort_table = cohortTable,
-                          cohort_id_ricoveri = cohortIdRicoveri,
-                          cohort_id_sepsi = cohortIdSepsi)
+sql <- SqlRender::render(sql,
+                         cdm_schema = cdmDatabaseSchema,
+                         results_schema = resultsDatabaseSchema,
+                         vocabulary_schema = cdmDatabaseSchema,
+                         cohort_table = cohortTable,
+                         cohort_id_ricoveri = cohortIdRicoveri,
+                         cohort_id_sepsi = cohortIdSepsi) %>%
+  SqlRender::translate(targetDialect = connectionDetails$dbms)
+
+DatabaseConnector::executeSql(conn, sql, progressBar = TRUE, reportOverallTime = TRUE)
+
+disconnect(conn)
 
 # Other predictors
 sqlFile <- "estrazione_covariate_casi.sql"
 sql <- readChar(file.path(sqlFolder, sqlFile), file.info(file.path(sqlFolder, sqlFile))$size)
 
-renderTranslateExecuteSql(connection = conn, 
-                          sql = sql,
-                          cdm_schema = cdmDatabaseSchema,
-                          results_schema = resultsDatabaseSchema,
-                          vocabulary_schema = cdmDatabaseSchema,
-                          cohort_table = cohortTable,
-                          cohort_id_ricoveri = cohortIdRicoveri,
-                          cohort_id_sepsi = cohortIdSepsi)
+sql <- SqlRender::render(sql,
+                         cdm_schema = cdmDatabaseSchema,
+                         results_schema = resultsDatabaseSchema,
+                         vocabulary_schema = cdmDatabaseSchema,
+                         cohort_table = cohortTable,
+                         cohort_id_ricoveri = cohortIdRicoveri,
+                         cohort_id_sepsi = cohortIdSepsi) %>%
+  SqlRender::translate(targetDialect = connectionDetails$dbms)
+
+conn <- connect(connectionDetails = connectionDetails)
+
+DatabaseConnector::executeSql(conn, sql, progressBar = TRUE, reportOverallTime = TRUE)
 
 # Predictor variables counts ----
 cat("Counting occurrences and producing the results...")
+conn <- connect(connectionDetails = connectionDetails)
 count_predictors_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_covariates_cases"))
 
 # Numero di ricoveri
