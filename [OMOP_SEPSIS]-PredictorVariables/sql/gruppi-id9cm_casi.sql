@@ -98,7 +98,7 @@ SELECT
 	all_diag.person_id,
 	all_diag.icd9_group,
 	all_diag.icd9_group_name,
-	count(*) INTO @results_schema.omop_sepsis_icd9_diagnosis
+	count(*) INTO @results_schema.omop_sepsis_icd9_diagnosis_cases
 FROM
 	(
 		SELECT
