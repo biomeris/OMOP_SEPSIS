@@ -91,7 +91,7 @@ CREATE INDEX idx_diagnosis_id ON #diagnosis_groups(std_concept_id);
 -- Tabella finale delle diagnosi
 ---------------------------------------------------------
 
-IF OBJECT_ID('@results_schema.omop_sepsis_icd9_diagnosis', 'U') IS NOT NULL DROP TABLE @results_schema.omop_sepsis_icd9_diagnosis;
+IF OBJECT_ID('@results_schema.omop_sepsis_icd9_diagnosis_cases', 'U') IS NOT NULL DROP TABLE @results_schema.omop_sepsis_icd9_diagnosis_cases;
 
 SELECT
 	all_diag.visit_occurrence_id,
