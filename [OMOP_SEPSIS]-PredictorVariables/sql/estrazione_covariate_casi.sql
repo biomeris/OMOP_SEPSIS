@@ -948,7 +948,7 @@ FROM
 			JOIN #ricoveri r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (3018010) -- Neutrophils/100 leukocytes in Blood
+			m.measurement_concept_id IN (3018010, 37398605) -- Neutrophils/100 leukocytes in Blood, Percentage neutrophils
 	) AS all_neutro_perc_base
 WHERE
 	all_neutro_perc_base.rank = 1;
@@ -981,7 +981,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (3018010) -- Neutrophils/100 leukocytes in Blood
+			m.measurement_concept_id (3018010, 37398605) -- Neutrophils/100 leukocytes in Blood, Percentage neutrophils
 	) AS all_neutro_perc_base
 WHERE
 	all_neutro_perc_base.rank = 1;
@@ -1082,7 +1082,7 @@ FROM
 			JOIN #ricoveri r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (3002030) -- Lymphocytes/100 leukocytes in Blood
+			m.measurement_concept_id IN (3002030, 37399254) -- Lymphocytes/100 leukocytes in Blood, Percentage lymphocytes
 	) AS all_linfo_perc_base
 WHERE
 	all_linfo_perc_base.rank = 1;
@@ -1115,7 +1115,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (3002030) -- Lymphocytes/100 leukocytes in Blood
+			m.measurement_concept_id IN (3002030, 37399254) -- Lymphocytes/100 leukocytes in Blood, Percentage lymphocytes
 	) AS all_linfo_perc_base
 WHERE
 	all_linfo_perc_base.rank = 1;
@@ -1216,7 +1216,7 @@ FROM
 			JOIN #ricoveri r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (3019069) -- Monocytes/100 leukocytes in Blood
+			m.measurement_concept_id IN (3019069, 37393321) -- Monocytes/100 leukocytes in Blood, Percentage monocytes
 	) AS all_mono_perc_base
 WHERE
 	all_mono_perc_base.rank = 1;
@@ -1249,7 +1249,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (3019069) -- Monocytes/100 leukocytes in Blood
+			m.measurement_concept_id IN (3019069, 37393321) -- Monocytes/100 leukocytes in Blood, Percentage monocytes
 	) AS all_mono_perc_base
 WHERE
 	all_mono_perc_base.rank = 1;
@@ -1484,7 +1484,7 @@ FROM
 			JOIN #ricoveri r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (3022096) -- Basophils/100 leukocytes in Blood
+			m.measurement_concept_id IN (3022096, 37398606) -- Basophils/100 leukocytes in Blood, Percentage basophils
 	) AS all_baso_perc_base
 WHERE
 	all_baso_perc_base.rank = 1;
@@ -1517,7 +1517,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (3022096) -- Basophils/100 leukocytes in Blood
+			m.measurement_concept_id IN (3022096, 37398606) -- Basophils/100 leukocytes in Blood, Percentage basophils
 	) AS all_baso_perc_base
 WHERE
 	all_baso_perc_base.rank = 1;
