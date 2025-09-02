@@ -1000,7 +1000,7 @@ FROM
 			JOIN #ricoveri r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4148615) -- Lymphocyte count
+			m.measurement_concept_id IN (4254663) -- Lymphocyte count
 	) AS all_linfo_cont_base
 WHERE
 	all_linfo_cont_base.rank = 1;
@@ -1033,7 +1033,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4148615) -- Lymphocyte count
+			m.measurement_concept_id IN (4254663) -- Lymphocyte count
 	) AS all_linfo_cont_post
 WHERE
 	all_linfo_cont_post.rank = 1;
