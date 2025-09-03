@@ -2,9 +2,9 @@
 -- Cleanup iniziale
 ---------------------------------------------------------
 IF OBJECT_ID('#ricoveri_all', 'U') IS NOT NULL DROP TABLE #ricoveri_all;
-IF OBJECT_ID('#ricoveri', 'U') IS NOT NULL DROP TABLE #ricoveri;
-IF OBJECT_ID('#anagrafica', 'U') IS NOT NULL DROP TABLE #anagrafica;
-IF OBJECT_ID('#reparto', 'U') IS NOT NULL DROP TABLE #reparto;
+IF OBJECT_ID('#ricoveri_tmp', 'U') IS NOT NULL DROP TABLE #ricoveri_tmp;
+IF OBJECT_ID('#anagrafica_tmp', 'U') IS NOT NULL DROP TABLE #anagrafica_tmp;
+IF OBJECT_ID('#reparto_tmp', 'U') IS NOT NULL DROP TABLE #reparto_tmp;
 IF OBJECT_ID('#emocultura', 'U') IS NOT NULL DROP TABLE #emocultura;
 IF OBJECT_ID('#urinocultura', 'U') IS NOT NULL DROP TABLE #urinocultura;
 IF OBJECT_ID('#procedure_inv', 'U') IS NOT NULL DROP TABLE #procedure_inv;
@@ -120,7 +120,7 @@ CREATE INDEX idx_ricoveri_all_person ON #ricoveri_all(person_id);
 -- Ricoveri con sepsi
 SELECT 
     ra.*
-INTO #ricoveri
+INTO #ricoveri_tmp
 FROM @results_schema.@cohort_table c2 
 INNER JOIN #ricoveri_all ra
     ON c2.subject_id = ra.person_id 
@@ -128,7 +128,7 @@ INNER JOIN #ricoveri_all ra
 	AND c2.cohort_start_date <= ra.visit_end_date 
 	WHERE c2.cohort_definition_id = @cohort_id_sepsi;
 
-CREATE INDEX idx_ricoveri_person ON #ricoveri(person_id);
+CREATE INDEX idx_ricoveri_person ON #ricoveri_tmp(person_id);
 
 ---------------------------------------------------------
 -- Anagrafica
@@ -138,18 +138,18 @@ SELECT
 	r.person_id,
 	p.gender_concept_id,
 	DATEPART(YEAR, r.visit_start_date) - p.year_of_birth AS age
-INTO #anagrafica
-FROM #ricoveri r
+INTO #anagrafica_tmp
+FROM #ricoveri_tmp r
 LEFT JOIN @cdm_schema.person p ON r.person_id = p.person_id;
 
-CREATE INDEX idx_anagrafica_person ON #anagrafica(person_id);
+CREATE INDEX idx_anagrafica_person ON #anagrafica_tmp(person_id);
 
 ---------------------------------------------------------
 -- Reparto ricovero
 ---------------------------------------------------------
 SELECT
 	*
-INTO #reparto
+INTO #reparto_tmp
 FROM
 	(
 		SELECT
@@ -166,12 +166,12 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.visit_detail vd
-			JOIN #ricoveri r ON vd.visit_occurrence_id = r.visit_occurrence_id
+			JOIN #ricoveri_tmp r ON vd.visit_occurrence_id = r.visit_occurrence_id
 	) AS all_visit_detail
 WHERE
 	all_visit_detail.rank = 1;
 
-CREATE INDEX idx_reparto_person ON #reparto(person_id);
+CREATE INDEX idx_reparto_person ON #reparto_tmp(person_id);
 
 ---------------------------------------------------------
 -- Emocultura
@@ -195,7 +195,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date >= r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -238,7 +238,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date >= r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -280,7 +280,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.procedure_occurrence po
-			JOIN #ricoveri r ON po.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON po.person_id = r.person_id
 			AND po.procedure_date >= r.visit_start_date
 			AND po.procedure_date <= r.visit_end_date
 		WHERE
@@ -324,7 +324,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (
@@ -364,7 +364,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -409,7 +409,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4030871) -- Red blood cell count
@@ -440,7 +440,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -476,7 +476,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4151358) -- Hematocrit determination
@@ -507,7 +507,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -543,7 +543,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4016239) -- Erythrocyte mean corpuscular volume determination
@@ -574,7 +574,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -610,7 +610,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4182871) -- Mean corpuscular hemoglobin determination
@@ -641,7 +641,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -677,7 +677,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4290193) -- Mean corpuscular hemoglobin concentration determination
@@ -708,7 +708,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -744,7 +744,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4281085) -- Red cell distribution width determination
@@ -775,7 +775,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -811,7 +811,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4298431) -- White blood cell count
@@ -842,7 +842,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -878,7 +878,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4148615) -- Neutrophil count
@@ -909,7 +909,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -945,7 +945,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (3018010, 37398605) -- Neutrophils/100 leukocytes in Blood, Percentage neutrophils
@@ -976,7 +976,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1012,7 +1012,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4254663) -- Lymphocyte count
@@ -1043,7 +1043,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1079,7 +1079,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (3002030, 37399254) -- Lymphocytes/100 leukocytes in Blood, Percentage lymphocytes
@@ -1110,7 +1110,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1146,7 +1146,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4194332) -- Monocyte count
@@ -1177,7 +1177,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1213,7 +1213,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (3019069, 37393321) -- Monocytes/100 leukocytes in Blood, Percentage monocytes
@@ -1244,7 +1244,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1280,7 +1280,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4216098) -- Eosinophil count
@@ -1311,7 +1311,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1347,7 +1347,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (3006504) -- Eosinophils/100 leukocytes in Blood
@@ -1378,7 +1378,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1414,7 +1414,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4172647) -- Basophil count
@@ -1445,7 +1445,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1481,7 +1481,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (3022096, 37398606) -- Basophils/100 leukocytes in Blood, Percentage basophils
@@ -1512,7 +1512,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1548,7 +1548,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			(
@@ -1585,7 +1585,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1627,7 +1627,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			(
@@ -1664,7 +1664,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1706,7 +1706,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4097620, 3040227) -- Platelet distribution width measurement
@@ -1737,7 +1737,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1773,7 +1773,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4192368) -- Platelet mean volume determination
@@ -1804,7 +1804,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1840,7 +1840,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (
@@ -1880,7 +1880,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1925,7 +1925,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4267147) -- Platelet count
@@ -1956,7 +1956,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -1992,7 +1992,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4245261) -- Prothrombin time
@@ -2023,7 +2023,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2059,7 +2059,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (2212742) -- Thromboplastin time, partial (PTT); plasma or whole blood 
@@ -2090,7 +2090,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2126,7 +2126,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4306239, 46285118) -- International normalized ratio 
@@ -2157,7 +2157,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2193,7 +2193,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (
@@ -2233,7 +2233,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2278,7 +2278,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4118986) -- Bilirubin measurement
@@ -2309,7 +2309,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2345,7 +2345,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4324383) -- Creatinine measurement
@@ -2376,7 +2376,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2412,7 +2412,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4020121, 4094594) -- Urea measurement
@@ -2443,7 +2443,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2479,7 +2479,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4202143, 4149519, 4144235) -- Blood glucose concentration
@@ -2510,7 +2510,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2546,7 +2546,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4208938) -- Sodium measurement, blood
@@ -2577,7 +2577,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2613,7 +2613,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4019545, 4008116) -- Chloride measurement, blood
@@ -2644,7 +2644,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2680,7 +2680,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4207483) -- Blood potassium measurement
@@ -2711,7 +2711,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2747,7 +2747,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (44791466) -- Procalcitonin measurement
@@ -2778,7 +2778,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2814,7 +2814,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (4208414) -- C-reactive protein measurement
@@ -2845,7 +2845,7 @@ FROM
 			) AS rank
 		FROM
 			@cdm_schema.measurement m
-			JOIN #ricoveri r ON m.person_id = r.person_id
+			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date > r.visit_start_date
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
@@ -2948,10 +2948,10 @@ SELECT r.visit_occurrence_id,
     IIF(pcrb.measurement_concept_id IS NOT NULL,1,0) AS pcr_base,
 	IIF(pcrp.measurement_concept_id IS NOT NULL,1,0) AS pcr_post
 INTO @results_schema.omop_sepsis_covariates_cases
-FROM #ricoveri r 
-LEFT JOIN #anagrafica a ON a.person_id = r.person_id
+FROM #ricoveri_tmp r 
+LEFT JOIN #anagrafica_tmp a ON a.person_id = r.person_id
 	AND a.visit_occurrence_id = r.visit_occurrence_id
-LEFT JOIN #reparto rep ON rep.person_id = r.person_id
+LEFT JOIN #reparto_tmp rep ON rep.person_id = r.person_id
 	AND rep.visit_occurrence_id = r.visit_occurrence_id
 LEFT JOIN #emocultura emo ON emo.person_id = r.person_id
 	AND emo.visit_occurrence_id = r.visit_occurrence_id
@@ -3112,9 +3112,9 @@ LEFT JOIN #pcr_post pcrp ON pcrp.person_id = r.person_id
 -- Cleanup finale
 ---------------------------------------------------------
 DROP TABLE #ricoveri_all;
-DROP TABLE #ricoveri;
-DROP TABLE #anagrafica;
-DROP TABLE #reparto;
+DROP TABLE #ricoveri_tmp;
+DROP TABLE #anagrafica_tmp;
+DROP TABLE #reparto_tmp;
 DROP TABLE #emocultura;
 DROP TABLE #urinocultura;
 DROP TABLE #procedure_inv;

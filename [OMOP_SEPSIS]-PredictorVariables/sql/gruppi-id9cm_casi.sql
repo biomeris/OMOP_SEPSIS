@@ -2,7 +2,7 @@
 -- Cleanup iniziale
 ---------------------------------------------------------
 IF OBJECT_ID('#ricoveri_all', 'U') IS NOT NULL DROP TABLE #ricoveri_all;
-IF OBJECT_ID('#ricoveri', 'U') IS NOT NULL DROP TABLE #ricoveri;
+IF OBJECT_ID('#ricoveri_tmp', 'U') IS NOT NULL DROP TABLE #ricoveri_tmp;
 IF OBJECT_ID('#diagnosis_groups', 'U') IS NOT NULL DROP TABLE #diagnosis_groups;
 
 ---------------------------------------------------------
@@ -42,7 +42,7 @@ CREATE INDEX idx_ricoveri_all_person ON #ricoveri_all(person_id);
 -- Ricoveri con sepsi
 SELECT 
     ra.*
-INTO #ricoveri
+INTO #ricoveri_tmp
 FROM @results_schema.@cohort_table c2 
 INNER JOIN #ricoveri_all ra
     ON c2.subject_id = ra.person_id 
@@ -50,7 +50,7 @@ INNER JOIN #ricoveri_all ra
 	AND c2.cohort_start_date <= ra.visit_end_date 
 	WHERE c2.cohort_definition_id = @cohort_id_sepsi;
 
-CREATE INDEX idx_ricoveri_person ON #ricoveri(person_id);
+CREATE INDEX idx_ricoveri_person ON #ricoveri_tmp(person_id);
 
 ---------------------------------------------------------
 -- Gruppi diagnosi
@@ -114,7 +114,7 @@ FROM
 		FROM
 			@cdm_schema.condition_occurrence co
 			JOIN #diagnosis_groups dg ON co.condition_concept_id = dg.std_concept_id
-			JOIN #ricoveri r ON r.person_id = co.person_id
+			JOIN #ricoveri_tmp r ON r.person_id = co.person_id
 			AND co.condition_start_date >= (r.visit_start_date - 180)
 			AND co.condition_start_date < r.visit_start_date
 	) all_diag
@@ -128,5 +128,5 @@ GROUP BY
 -- Cleanup finale
 ---------------------------------------------------------
 DROP TABLE #ricoveri_all;
-DROP TABLE #ricoveri;
+DROP TABLE #ricoveri_tmp;
 DROP TABLE #diagnosis_groups;

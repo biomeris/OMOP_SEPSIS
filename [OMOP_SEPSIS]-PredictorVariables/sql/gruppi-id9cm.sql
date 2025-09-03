@@ -1,7 +1,7 @@
 ---------------------------------------------------------
 -- Cleanup iniziale
 ---------------------------------------------------------
-IF OBJECT_ID('#ricoveri', 'U') IS NOT NULL DROP TABLE #ricoveri;
+IF OBJECT_ID('#ricoveri_tmp', 'U') IS NOT NULL DROP TABLE #ricoveri_tmp;
 IF OBJECT_ID('#diagnosis_groups', 'U') IS NOT NULL DROP TABLE #diagnosis_groups;
 
 ---------------------------------------------------------
@@ -16,7 +16,7 @@ SELECT
 	vo.admitted_from_concept_id,
 	c.cohort_start_date,
 	vo.visit_end_date - vo.visit_start_date AS visit_length
-INTO #ricoveri
+INTO #ricoveri_tmp
 FROM
 	@cdm_schema.visit_occurrence vo
 	JOIN @results_schema. @cohort_table c ON c.subject_id = vo.person_id
@@ -35,7 +35,7 @@ WHERE
 	AND (vo.visit_end_date - vo.visit_start_date) > 1 
 	AND c.cohort_definition_id = @cohort_id_ricoveri;
 
-CREATE INDEX idx_ricoveri_person ON #ricoveri(person_id);
+CREATE INDEX idx_ricoveri_person ON #ricoveri_tmp(person_id);
 
 ---------------------------------------------------------
 -- Gruppi diagnosi
@@ -99,7 +99,7 @@ FROM
 		FROM
 			@cdm_schema.condition_occurrence co
 			JOIN #diagnosis_groups dg ON co.condition_concept_id = dg.std_concept_id
-			JOIN #ricoveri r ON r.person_id = co.person_id
+			JOIN #ricoveri_tmp r ON r.person_id = co.person_id
 			AND co.condition_start_date >= (r.visit_start_date - 180)
 			AND co.condition_start_date < r.visit_start_date
 	) all_diag
@@ -112,5 +112,5 @@ GROUP BY
 ---------------------------------------------------------
 -- Cleanup finale
 ---------------------------------------------------------
-DROP TABLE #ricoveri;
+DROP TABLE #ricoveri_tmp;
 DROP TABLE #diagnosis_groups;
