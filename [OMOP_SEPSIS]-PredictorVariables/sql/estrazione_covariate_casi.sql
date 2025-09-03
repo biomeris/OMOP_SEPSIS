@@ -981,7 +981,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id (3018010, 37398605) -- Neutrophils/100 leukocytes in Blood, Percentage neutrophils
+			m.measurement_concept_id IN (3018010, 37398605) -- Neutrophils/100 leukocytes in Blood, Percentage neutrophils
 	) AS all_neutro_perc_base
 WHERE
 	all_neutro_perc_base.rank = 1;
