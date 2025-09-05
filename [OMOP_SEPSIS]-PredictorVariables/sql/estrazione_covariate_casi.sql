@@ -574,7 +574,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4016239) -- Erythrocyte mean corpuscular volume determination
+			m.measurement_concept_id IN (4016239,3024731) -- Erythrocyte mean corpuscular volume determination
 	) AS all_mcv_base
 WHERE
 	all_mcv_base.rank = 1;
@@ -607,7 +607,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4016239) -- Erythrocyte mean corpuscular volume determination
+			m.measurement_concept_id IN (4016239,3024731) -- Erythrocyte mean corpuscular volume determination
 	) AS all_mcv_base
 WHERE
 	all_mcv_base.rank = 1;
@@ -641,7 +641,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4182871) -- Mean corpuscular hemoglobin determination
+			m.measurement_concept_id IN (4182871,37398674) -- Mean corpuscular hemoglobin determination
 	) AS all_mch_base
 WHERE
 	all_mch_base.rank = 1;
@@ -674,7 +674,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4182871) -- Mean corpuscular hemoglobin determination
+			m.measurement_concept_id IN (4182871,37398674) -- Mean corpuscular hemoglobin determination
 	) AS all_mch_base
 WHERE
 	all_mch_base.rank = 1;
@@ -708,7 +708,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4290193) -- Mean corpuscular hemoglobin concentration determination
+			m.measurement_concept_id IN (4290193,37393850) -- Mean corpuscular hemoglobin concentration determination
 	) AS all_mchc_base
 WHERE
 	all_mchc_base.rank = 1;
@@ -741,7 +741,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4290193) -- Mean corpuscular hemoglobin concentration determination
+			m.measurement_concept_id IN (4290193,37393850) -- Mean corpuscular hemoglobin concentration determination
 	) AS all_mchc_base
 WHERE
 	all_mchc_base.rank = 1;
@@ -1061,7 +1061,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4254663) -- Lymphocyte count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4254663,3019198,37208689)
+			)
 	) AS all_linfo_cont_base
 WHERE
 	all_linfo_cont_base.rank = 1;
@@ -1094,7 +1102,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4254663) -- Lymphocyte count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4254663,3019198,37208689)
+			)
 	) AS all_linfo_cont_base
 WHERE
 	all_linfo_cont_base.rank = 1;
@@ -1822,7 +1838,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4192368) -- Platelet mean volume determination
+			m.measurement_concept_id IN (4192368,37397923) -- Platelet mean volume determination
 	) AS all_mpv_base
 WHERE
 	all_mpv_base.rank = 1;
@@ -1855,7 +1871,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4192368) -- Platelet mean volume determination
+			m.measurement_concept_id IN (4192368,37397923) -- Platelet mean volume determination
 	) AS all_mpv_base
 WHERE
 	all_mpv_base.rank = 1;
