@@ -397,7 +397,16 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4030871) -- Red blood cell count
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (1450296) -- Red blood cell count in blood
+					AND c.invalid_reason IS NULL
+					AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4030871) -- Red blood cell count
 	) AS all_rbc_base
 WHERE
 	all_rbc_base.rank = 1;
@@ -430,7 +439,16 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4030871) -- Red blood cell count
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (1450296) -- Red blood cell count in blood
+					AND c.invalid_reason IS NULL
+					AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4030871) -- Red blood cell count
 	) AS all_rbc_base
 WHERE
 	all_rbc_base.rank = 1;
@@ -732,7 +750,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4281085) -- Red cell distribution width determination
+			m.measurement_concept_id IN (3002385, 3002888, 4281085) -- Red cell distribution width determination
 	) AS all_rdw_base
 WHERE
 	all_rdw_base.rank = 1;
@@ -765,7 +783,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4281085) -- Red cell distribution width determination
+			m.measurement_concept_id IN (3002385, 3002888, 4281085) -- Red cell distribution width determination
 	) AS all_rdw_base
 WHERE
 	all_rdw_base.rank = 1;
@@ -799,7 +817,16 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4298431) -- White blood cell count
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (40654026) -- Leukocytes|Number Concentration (count/vol)|Moment in time|Blood
+					AND c.invalid_reason IS NULL
+					AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4298431, 37208925) -- White blood cell count
 	) AS all_wbc_base
 WHERE
 	all_wbc_base.rank = 1;
@@ -832,7 +859,16 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4298431) -- White blood cell count
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (40654026) -- Leukocytes|Number Concentration (count/vol)|Moment in time|Blood
+					AND c.invalid_reason IS NULL
+					AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4298431, 37208925) -- White blood cell count
 	) AS all_wbc_base
 WHERE
 	all_wbc_base.rank = 1;
@@ -866,7 +902,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4148615) -- Neutrophil count
+			m.measurement_concept_id IN (4148615,3017732) -- Neutrophil count
 	) AS all_neutro_cont_base
 WHERE
 	all_neutro_cont_base.rank = 1;
@@ -899,7 +935,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4148615) -- Neutrophil count
+			m.measurement_concept_id IN (4148615,3017732) -- Neutrophil count
 	) AS all_neutro_cont_base
 WHERE
 	all_neutro_cont_base.rank = 1;
@@ -1335,7 +1371,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (3006504) -- Eosinophils/100 leukocytes in Blood
+			m.measurement_concept_id IN (3006504, 37399255) -- Eosinophils/100 leukocytes in Blood
 	) AS all_eosi_perc_base
 WHERE
 	all_eosi_perc_base.rank = 1;
@@ -1368,7 +1404,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (3006504) -- Eosinophils/100 leukocytes in Blood
+			m.measurement_concept_id IN (3006504, 37399255) -- Eosinophils/100 leukocytes in Blood
 	) AS all_eosi_perc_base
 WHERE
 	all_eosi_perc_base.rank = 1;
@@ -1402,7 +1438,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4172647) -- Basophil count
+			m.measurement_concept_id IN (4172647, 3006315) -- Basophil count
 	) AS all_baso_cont_base
 WHERE
 	all_baso_cont_base.rank = 1;
@@ -1435,7 +1471,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4172647) -- Basophil count
+			m.measurement_concept_id IN (4172647, 3006315) -- Basophil count
 	) AS all_baso_cont_base
 WHERE
 	all_baso_cont_base.rank = 1;
@@ -1616,7 +1652,7 @@ FROM
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			(
-					(m.measurement_concept_id = 3046588) -- Normoblasts/100 blasts in Blood
+					(m.measurement_concept_id IN (3046588,3029160)) -- Normoblasts/100 blasts in Blood
 					OR (
 						m.measurement_concept_id = 4012826 -- Nucleated red blood cell count procedure
 						AND m.unit_concept_id IN (8554) -- %
@@ -1655,7 +1691,7 @@ FROM
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
 			(
-					(m.measurement_concept_id = 3046588) -- Normoblasts/100 blasts in Blood
+					(m.measurement_concept_id IN (3046588,3029160)) -- Normoblasts/100 blasts in Blood
 					OR (
 						m.measurement_concept_id = 4012826 -- Nucleated red blood cell count procedure
 						AND m.unit_concept_id IN (8554) -- %
@@ -1694,7 +1730,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4097620, 3040227) -- Platelet distribution width measurement
+			m.measurement_concept_id IN (4097620, 3040227, 3002736) -- Platelet distribution width measurement
 	) AS all_pdw_base
 WHERE
 	all_pdw_base.rank = 1;
@@ -1727,7 +1763,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4097620, 3040227) -- Platelet distribution width measurement
+			m.measurement_concept_id IN (4097620, 3040227, 3002736) -- Platelet distribution width measurement
 	) AS all_pdw_base
 WHERE
 	all_pdw_base.rank = 1;
@@ -1980,7 +2016,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4245261) -- Prothrombin time
+			m.measurement_concept_id IN (4245261, 3034426) -- Prothrombin time
 	) AS all_pt_base
 WHERE
 	all_pt_base.rank = 1;
@@ -2013,7 +2049,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4245261) -- Prothrombin time
+			m.measurement_concept_id IN (4245261, 3034426) -- Prothrombin time
 	) AS all_pt_base
 WHERE
 	all_pt_base.rank = 1;
