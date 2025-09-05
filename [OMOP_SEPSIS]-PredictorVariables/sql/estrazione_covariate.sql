@@ -229,14 +229,24 @@ FROM
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
 			m.measurement_concept_id IN (
-				SELECT
-					c.concept_id
+				SELECT concept_id FROM @vocabulary_schema.CONCEPT WHERE concept_id IN (4024509)
+				UNION  
+				SELECT c.concept_id
+				FROM @vocabulary_schema.CONCEPT c
+				JOIN @vocabulary_schema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
+				AND ca.ancestor_concept_id IN (4024509)
+				AND c.invalid_reason IS NULL
+				UNION
+				SELECT DISTINCT cr.concept_id_1 AS concept_id
 				FROM
-					@vocabulary_schema.concept c
-					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
-					AND ca.ancestor_concept_id IN (4024509) -- Urine culture 
-					AND c.invalid_reason IS NULL
-			    	AND c.domain_id = 'Measurement'
+				(
+					SELECT concept_id FROM @vocabulary_schema.CONCEPT WHERE concept_id IN (4024509)
+					UNION  SELECT c.concept_id
+					FROM @vocabulary_schema.CONCEPT c
+					JOIN @vocabulary_schema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4024509)
+					AND c.invalid_reason IS NULL) C
+				JOIN @vocabulary_schema.concept_relationship cr ON C.concept_id = cr.concept_id_2 AND cr.relationship_id = 'Maps to' AND cr.invalid_reason IS NULL
 			)
 	) AS all_uro
 WHERE
