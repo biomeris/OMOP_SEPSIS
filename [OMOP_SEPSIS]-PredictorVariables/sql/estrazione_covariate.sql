@@ -760,7 +760,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (3002385, 3002888, 4281085) -- Red cell distribution width determination
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (3002385,3002888,4281085,37397924) -- Red cell distribution width
+			)
 	) AS all_rdw_base
 WHERE
 	all_rdw_base.rank = 1;
@@ -793,7 +801,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (3002385, 3002888, 4281085) -- Red cell distribution width determination
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (3002385,3002888,4281085,37397924) -- Red cell distribution width
+			)
 	) AS all_rdw_base
 WHERE
 	all_rdw_base.rank = 1;
@@ -912,7 +928,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4148615,3017732) -- Neutrophil count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4148615,37208699,3017732)
+			)
 	) AS all_neutro_cont_base
 WHERE
 	all_neutro_cont_base.rank = 1;
@@ -945,7 +969,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4148615,3017732) -- Neutrophil count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4148615,37208699,3017732)
+			)
 	) AS all_neutro_cont_base
 WHERE
 	all_neutro_cont_base.rank = 1;
@@ -1196,7 +1228,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4194332) -- Monocyte count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4194332, 37208691,3001604)
+			)
 	) AS all_mono_cont_base
 WHERE
 	all_mono_cont_base.rank = 1;
@@ -1229,7 +1269,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4194332) -- Monocyte count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4194332, 37208691,3001604)
+			)
 	) AS all_mono_cont_base
 WHERE
 	all_mono_cont_base.rank = 1;
@@ -1330,7 +1378,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4216098) -- Eosinophil count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4216098, 37208633,3013115)
+			)
 	) AS all_eosi_cont_base
 WHERE
 	all_eosi_cont_base.rank = 1;
@@ -1363,7 +1419,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4216098) -- Eosinophil count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4216098, 37208633,3013115)
+			)
 	) AS all_eosi_cont_base
 WHERE
 	all_eosi_cont_base.rank = 1;
@@ -1464,7 +1528,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4172647, 3006315) -- Basophil count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4172647,37208514,3006315)
+			)
 	) AS all_baso_cont_base
 WHERE
 	all_baso_cont_base.rank = 1;
@@ -1497,7 +1569,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4172647, 3006315) -- Basophil count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4172647,37208514,3006315)
+			)
 	) AS all_baso_cont_base
 WHERE
 	all_baso_cont_base.rank = 1;
@@ -1975,7 +2055,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4267147) -- Platelet count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4267147,37208696,3007461)
+			)
 	) AS all_plt_base
 WHERE
 	all_plt_base.rank = 1;
@@ -2008,7 +2096,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4267147) -- Platelet count
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4267147,37208696,3007461)
+			)
 	) AS all_plt_base
 WHERE
 	all_plt_base.rank = 1;
@@ -2109,7 +2205,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (2212742) -- Thromboplastin time, partial (PTT); plasma or whole blood 
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (2212742,4307180)
+			)
 	) AS all_ptt_base
 WHERE
 	all_ptt_base.rank = 1;
@@ -2142,7 +2246,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (2212742) -- Thromboplastin time, partial (PTT); plasma or whole blood 
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (2212742,4307180)
+			) 
 	) AS all_ptt_base
 WHERE
 	all_ptt_base.rank = 1;
