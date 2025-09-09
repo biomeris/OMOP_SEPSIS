@@ -2522,7 +2522,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4324383) -- Creatinine measurement
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (3051825,4324383)
+			)
 	) AS all_creatinina_base
 WHERE
 	all_creatinina_base.rank = 1;
@@ -2555,7 +2563,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4324383) -- Creatinine measurement
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (3051825,4324383)
+			)
 	) AS all_creatinina_base
 WHERE
 	all_creatinina_base.rank = 1;
@@ -2857,7 +2873,15 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4207483) -- Blood potassium measurement
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4245152,4207483,21490733)
+			)
 	) AS all_potassium_base
 WHERE
 	all_potassium_base.rank = 1;
@@ -2890,7 +2914,15 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4207483) -- Blood potassium measurement
+			m.measurement_concept_id IN (
+				SELECT DISTINCT cr.concept_id_1 
+				FROM @vocabulary_schema.concept c
+				JOIN @vocabulary_schema.concept_relationship cr 
+				ON c.concept_id = cr.concept_id_2 
+					AND cr.relationship_id = 'Maps to' 
+					AND cr.invalid_reason IS NULL 
+				WHERE concept_id IN (4245152,4207483,21490733)
+			)
 	) AS all_potassium_base
 WHERE
 	all_potassium_base.rank = 1;
