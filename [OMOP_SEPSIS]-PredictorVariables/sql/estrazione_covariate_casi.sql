@@ -507,7 +507,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4151358) -- Hematocrit determination
+			m.measurement_concept_id IN (4151358,3023314) -- Hematocrit determination
 	) AS all_hct_base
 WHERE
 	all_hct_base.rank = 1;
@@ -540,7 +540,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4151358) -- Hematocrit determination
+			m.measurement_concept_id IN (4151358,3023314) -- Hematocrit determination
 	) AS all_hct_base
 WHERE
 	all_hct_base.rank = 1;
@@ -641,7 +641,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4182871,37398674) -- Mean corpuscular hemoglobin determination
+			m.measurement_concept_id IN (4182871,37398674,3035941) -- Mean corpuscular hemoglobin determination
 	) AS all_mch_base
 WHERE
 	all_mch_base.rank = 1;
@@ -674,7 +674,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4182871,37398674) -- Mean corpuscular hemoglobin determination
+			m.measurement_concept_id IN (4182871,37398674,3035941) -- Mean corpuscular hemoglobin determination
 	) AS all_mch_base
 WHERE
 	all_mch_base.rank = 1;
@@ -708,7 +708,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4290193,37393850) -- Mean corpuscular hemoglobin concentration determination
+			m.measurement_concept_id IN (4290193,37393850,3003338) -- Mean corpuscular hemoglobin concentration determination
 	) AS all_mchc_base
 WHERE
 	all_mchc_base.rank = 1;
@@ -741,7 +741,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4290193,37393850) -- Mean corpuscular hemoglobin concentration determination
+			m.measurement_concept_id IN (4290193,37393850,3003338) -- Mean corpuscular hemoglobin concentration determination
 	) AS all_mchc_base
 WHERE
 	all_mchc_base.rank = 1;
@@ -1918,7 +1918,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4192368,37397923) -- Platelet mean volume determination
+			m.measurement_concept_id IN (4192368,37397923,3001123) -- Platelet mean volume determination
 	) AS all_mpv_base
 WHERE
 	all_mpv_base.rank = 1;
@@ -1951,7 +1951,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4192368,37397923) -- Platelet mean volume determination
+			m.measurement_concept_id IN (4192368,37397923,3001123) -- Platelet mean volume determination
 	) AS all_mpv_base
 WHERE
 	all_mpv_base.rank = 1;
@@ -2455,7 +2455,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4118986) -- Bilirubin measurement
+			m.measurement_concept_id IN (4118986,3024128,40757494) -- Bilirubin measurement
 	) AS all_bilirubina_base
 WHERE
 	all_bilirubina_base.rank = 1;
@@ -2488,7 +2488,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4118986) -- Bilirubin measurement
+			m.measurement_concept_id IN (4118986,3024128,40757494) -- Bilirubin measurement
 	) AS all_bilirubina_base
 WHERE
 	all_bilirubina_base.rank = 1;
@@ -2605,7 +2605,16 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4020121, 4094594) -- Urea measurement
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4094594) -- Blood urea measurement
+					AND c.invalid_reason IS NULL
+			    	AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4020121,4094594) -- Urea measurement
 	) AS all_azotemia_base
 WHERE
 	all_azotemia_base.rank = 1;
@@ -2638,7 +2647,16 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4020121, 4094594) -- Urea measurement
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4094594) -- Blood urea measurement
+					AND c.invalid_reason IS NULL
+			    	AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4020121,4094594) -- Urea measurement
 	) AS all_azotemia_base
 WHERE
 	all_azotemia_base.rank = 1;
@@ -2672,7 +2690,16 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4202143, 4149519, 4144235) -- Blood glucose concentration
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4202143,4144235) -- Glucose measurement, blood
+					AND c.invalid_reason IS NULL
+			    	AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4202143,4149519,4144235) -- Blood glucose concentration
 	) AS all_glicemia_base
 WHERE
 	all_glicemia_base.rank = 1;
@@ -2705,7 +2732,16 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4202143, 4149519, 4144235) -- Blood glucose concentration
+			m.measurement_concept_id IN (
+				SELECT
+					c.concept_id
+				FROM
+					@vocabulary_schema.concept c
+					JOIN @vocabulary_schema.concept_ancestor ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4202143,4144235) -- Glucose measurement, blood
+					AND c.invalid_reason IS NULL
+			    	AND c.domain_id = 'Measurement'
+			) OR m.measurement_concept_id IN (4202143,4149519,4144235) -- Blood glucose concentration
 	) AS all_glicemia_base
 WHERE
 	all_glicemia_base.rank = 1;
