@@ -2523,13 +2523,24 @@ FROM
 			AND m.measurement_date = r.visit_start_date
 		WHERE
 			m.measurement_concept_id IN (
-				SELECT DISTINCT cr.concept_id_1 
-				FROM @vocabulary_schema.concept c
-				JOIN @vocabulary_schema.concept_relationship cr 
-				ON c.concept_id = cr.concept_id_2 
-					AND cr.relationship_id = 'Maps to' 
-					AND cr.invalid_reason IS NULL 
-				WHERE concept_id IN (3051825,4324383)
+				SELECT concept_id FROM @vocabulary_schema.CONCEPT WHERE concept_id IN (4324383)
+				UNION  
+				SELECT c.concept_id
+				FROM @vocabulary_schema.CONCEPT c
+				JOIN @vocabulary_schema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
+				AND ca.ancestor_concept_id IN (4324383)
+				AND c.invalid_reason IS NULL
+				UNION
+				SELECT DISTINCT cr.concept_id_1 AS concept_id
+				FROM
+				(
+					SELECT concept_id FROM @vocabulary_schema.CONCEPT WHERE concept_id IN (4324383)
+					UNION  SELECT c.concept_id
+					FROM @vocabulary_schema.CONCEPT c
+					JOIN @vocabulary_schema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4324383)
+					AND c.invalid_reason IS NULL) C
+				JOIN @vocabulary_schema.concept_relationship cr ON C.concept_id = cr.concept_id_2 AND cr.relationship_id = 'Maps to' AND cr.invalid_reason IS NULL
 			)
 	) AS all_creatinina_base
 WHERE
@@ -2564,13 +2575,24 @@ FROM
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
 			m.measurement_concept_id IN (
-				SELECT DISTINCT cr.concept_id_1 
-				FROM @vocabulary_schema.concept c
-				JOIN @vocabulary_schema.concept_relationship cr 
-				ON c.concept_id = cr.concept_id_2 
-					AND cr.relationship_id = 'Maps to' 
-					AND cr.invalid_reason IS NULL 
-				WHERE concept_id IN (3051825,4324383)
+				SELECT concept_id FROM @vocabulary_schema.CONCEPT WHERE concept_id IN (4324383)
+				UNION  
+				SELECT c.concept_id
+				FROM @vocabulary_schema.CONCEPT c
+				JOIN @vocabulary_schema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
+				AND ca.ancestor_concept_id IN (4324383)
+				AND c.invalid_reason IS NULL
+				UNION
+				SELECT DISTINCT cr.concept_id_1 AS concept_id
+				FROM
+				(
+					SELECT concept_id FROM @vocabulary_schema.CONCEPT WHERE concept_id IN (4324383)
+					UNION  SELECT c.concept_id
+					FROM @vocabulary_schema.CONCEPT c
+					JOIN @vocabulary_schema.CONCEPT_ANCESTOR ca ON c.concept_id = ca.descendant_concept_id
+					AND ca.ancestor_concept_id IN (4324383)
+					AND c.invalid_reason IS NULL) C
+				JOIN @vocabulary_schema.concept_relationship cr ON C.concept_id = cr.concept_id_2 AND cr.relationship_id = 'Maps to' AND cr.invalid_reason IS NULL
 			)
 	) AS all_creatinina_base
 WHERE
