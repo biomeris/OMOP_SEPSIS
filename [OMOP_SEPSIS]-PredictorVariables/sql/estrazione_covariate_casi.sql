@@ -2455,7 +2455,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4118986,3024128,40757494) -- Bilirubin measurement
+			m.measurement_concept_id IN (4118986,3024128,40757494,3007242,4216632) -- Bilirubin measurement
 	) AS all_bilirubina_base
 WHERE
 	all_bilirubina_base.rank = 1;
@@ -2488,7 +2488,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4118986,3024128,40757494) -- Bilirubin measurement
+			m.measurement_concept_id IN (4118986,3024128,40757494,3007242,4216632) -- Bilirubin measurement
 	) AS all_bilirubina_base
 WHERE
 	all_bilirubina_base.rank = 1;
