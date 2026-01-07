@@ -507,7 +507,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4151358,3023314) -- Hematocrit determination
+			m.measurement_concept_id IN (4151358,3023314,2212642,3009542) -- Hematocrit determination
 	) AS all_hct_base
 WHERE
 	all_hct_base.rank = 1;
@@ -540,7 +540,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4151358,3023314) -- Hematocrit determination
+			m.measurement_concept_id IN (4151358,3023314,2212642,3009542) -- Hematocrit determination
 	) AS all_hct_base
 WHERE
 	all_hct_base.rank = 1;
@@ -1851,7 +1851,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4097620, 3040227, 3002736) -- Platelet distribution width measurement
+			m.measurement_concept_id IN (4097620, 3040227, 3002736, 3039417) -- Platelet distribution width measurement
 	) AS all_pdw_base
 WHERE
 	all_pdw_base.rank = 1;
@@ -1884,7 +1884,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4097620, 3040227, 3002736) -- Platelet distribution width measurement
+			m.measurement_concept_id IN (4097620, 3040227, 3002736, 3039417) -- Platelet distribution width measurement
 	) AS all_pdw_base
 WHERE
 	all_pdw_base.rank = 1;
@@ -2227,7 +2227,7 @@ FROM
 				ON c.concept_id = cr.concept_id_2 
 					AND cr.relationship_id = 'Maps to' 
 					AND cr.invalid_reason IS NULL 
-				WHERE concept_id IN (2212742,4307180)
+				WHERE concept_id IN (2212742,4307180,4307179,4175016,3013466)
 			)
 	) AS all_ptt_base
 WHERE
@@ -2268,7 +2268,7 @@ FROM
 				ON c.concept_id = cr.concept_id_2 
 					AND cr.relationship_id = 'Maps to' 
 					AND cr.invalid_reason IS NULL 
-				WHERE concept_id IN (2212742,4307180)
+				WHERE concept_id IN (2212742,4307180,4307179,4175016,3013466)
 			) 
 	) AS all_ptt_base
 WHERE
@@ -2455,7 +2455,7 @@ FROM
 			JOIN #ricoveri_tmp r ON m.person_id = r.person_id
 			AND m.measurement_date = r.visit_start_date
 		WHERE
-			m.measurement_concept_id IN (4118986,3024128,40757494,3007242,4216632) -- Bilirubin measurement
+			m.measurement_concept_id IN (4118986,3024128,40757494,3007242,4216632,3028833,3027597,3021194,3007359) -- Bilirubin measurement
 	) AS all_bilirubina_base
 WHERE
 	all_bilirubina_base.rank = 1;
@@ -2488,7 +2488,7 @@ FROM
 			AND m.measurement_date <= r.visit_end_date
 			AND m.measurement_date <= (r.visit_start_date + 3)
 		WHERE
-			m.measurement_concept_id IN (4118986,3024128,40757494,3007242,4216632) -- Bilirubin measurement
+			m.measurement_concept_id IN (4118986,3024128,40757494,3007242,4216632,3028833,3027597,3021194,3007359) -- Bilirubin measurement
 	) AS all_bilirubina_base
 WHERE
 	all_bilirubina_base.rank = 1;
