@@ -116,7 +116,7 @@ FROM
 			JOIN #diagnosis_groups dg ON co.condition_concept_id = dg.std_concept_id
 			JOIN #ricoveri_tmp r ON r.person_id = co.person_id
 			AND co.condition_start_date >= (r.visit_start_date - 180)
-			AND co.condition_start_date < r.visit_start_date
+			AND co.condition_start_date <= r.visit_end_date
 	) all_diag
 GROUP BY
 	all_diag.visit_occurrence_id,
