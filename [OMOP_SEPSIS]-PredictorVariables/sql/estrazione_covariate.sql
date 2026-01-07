@@ -416,7 +416,7 @@ FROM
 					AND ca.ancestor_concept_id IN (1450296) -- Red blood cell count in blood
 					AND c.invalid_reason IS NULL
 					AND c.domain_id = 'Measurement'
-			) OR m.measurement_concept_id IN (4030871,3026361,3020416,3027017,40765001) -- Red blood cell count
+			) OR m.measurement_concept_id IN (4030871) -- Red blood cell count
 	) AS all_rbc_base
 WHERE
 	all_rbc_base.rank = 1;
@@ -458,7 +458,7 @@ FROM
 					AND ca.ancestor_concept_id IN (1450296) -- Red blood cell count in blood
 					AND c.invalid_reason IS NULL
 					AND c.domain_id = 'Measurement'
-			) OR m.measurement_concept_id IN (4030871,3026361,3020416,3027017,40765001) -- Red blood cell count
+			) OR m.measurement_concept_id IN (4030871) -- Red blood cell count
 	) AS all_rbc_base
 WHERE
 	all_rbc_base.rank = 1;
