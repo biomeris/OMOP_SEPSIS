@@ -83,26 +83,24 @@ SELECT
 	all_diag.person_id,
 	all_diag.icd9_group,
 	all_diag.icd9_group_name,
-	count(*) INTO @results_schema.omop_sepsis_icd9_diagnosis
-FROM
-	(
-		SELECT
-			co.condition_occurrence_id,
-			co.person_id,
-			co.condition_concept_id,
-			co.condition_start_date,
-			dg.icd9_code,
-			dg.icd9_group,
-			dg.icd9_group_name,
-			dg.std_concept_id,
-			r.visit_occurrence_id
-		FROM
-			@cdm_schema.condition_occurrence co
-			JOIN #diagnosis_groups dg ON co.condition_concept_id = dg.std_concept_id
-			JOIN #ricoveri_tmp r ON r.person_id = co.person_id
-			AND co.condition_start_date >= (r.visit_start_date - 180)
-			AND co.condition_start_date <= r.visit_end_date
-	) all_diag
+	COUNT(*) AS n_diagnosi
+INTO @results_schema.omop_sepsis_icd9_diagnosis_cases
+FROM (
+	SELECT DISTINCT
+		r.visit_occurrence_id,
+		r.person_id,
+		dg.icd9_group,
+		dg.icd9_group_name,
+		co.condition_occurrence_id
+	FROM
+		@cdm_schema.condition_occurrence co
+		JOIN #diagnosis_groups dg
+			ON co.condition_concept_id = dg.std_concept_id
+		JOIN #ricoveri_tmp r
+			ON r.person_id = co.person_id
+		   AND co.condition_start_date >= (r.visit_start_date - 180)
+		   AND co.condition_start_date <= r.visit_end_date
+) all_diag
 GROUP BY
 	all_diag.visit_occurrence_id,
 	all_diag.person_id,

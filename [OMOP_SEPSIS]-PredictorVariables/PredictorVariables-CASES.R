@@ -430,6 +430,40 @@ count_diag <- count_diag_db %>%
 count_diag <- count_diag %>%
   mutate(perc = round(n / n_ricoveri, digits = 2))
 
+# Capitoli ICD-9-CM
+count_diag_capitoli_db <- dplyr::tbl(conn, in_schema(resultsDatabaseSchema, "omop_sepsis_icd9_diagnosis_cases")) %>%
+  mutate(icd9_group_num = as.integer(icd9_group),
+         capitolo_icd9 = case_when(icd9_group_num <= 139 ~ "1 - Malattie infettive e parassitarie (001-139)",
+                                   icd9_group_num >= 140 & icd9_group_num <= 239 ~ "2 - Tumori (140-239)",
+                                   icd9_group_num >= 240 & icd9_group_num <= 279 ~ "3 - Malattie delle ghiandole endocrine, della nutrizione e del metabolismo, e disturbi immunitari (240-279)",
+                                   icd9_group_num >= 280 & icd9_group_num <= 289 ~ "4 - Malattie del sangue e organi emopoietici (280-289)",
+                                   icd9_group_num >= 290 & icd9_group_num <= 319 ~ "5 - Disturbi mentali (290-319)",
+                                   icd9_group_num >= 320 & icd9_group_num <= 389 ~ "6 - Malattie del sistema nervoso e degli organi di senso (320-389)",
+                                   icd9_group_num >= 390 & icd9_group_num <= 459 ~ "7 - Malattie del sistema circolatorio (390-459)",
+                                   icd9_group_num >= 460 & icd9_group_num <= 519 ~ "8 - Malattie dell'apparato respiratorio (460-519)",
+                                   icd9_group_num >= 520 & icd9_group_num <= 579 ~ "9 - Malattie dellapparato digerente (520-579)",
+                                   icd9_group_num >= 580 & icd9_group_num <= 629 ~ "10 - Malattie dell'apparato genitourinario (580-629)",
+                                   icd9_group_num >= 630 & icd9_group_num <= 677 ~ "11 - Complicazioni della gravidanza, del parto e del puerperio (630-677)",
+                                   icd9_group_num >= 680 & icd9_group_num <= 709 ~ "12 - Malattie della pelle e del tessuto sottocutaneo (680-709)",
+                                   icd9_group_num >= 710 & icd9_group_num <= 739 ~ "13 - Malattie del sistema osteomuscolare e del tessuto connettivo (710-739)",
+                                   icd9_group_num >= 740 & icd9_group_num <= 759 ~ "14 - Malformazioni congenite (740-759)",
+                                   icd9_group_num >= 760 & icd9_group_num <= 779 ~ "15 - Alcune condizioni morbose di origine perinatale (760-779)",
+                                   icd9_group_num >= 780 & icd9_group_num <= 799 ~ "16 - Sintomi, segni, e stati morbosi maldefiniti (780-799)",
+                                   icd9_group_num >= 800 & icd9_group_num <= 999 ~ "17 - Traumatismi e avvelenamenti (800-999)",
+                                   TRUE ~ "(678-679)")) %>%
+  group_by(visit_occurrence_id, capitolo_icd9) %>%
+  summarize(n = sum(n_diagnosi)) %>%
+  ungroup() %>%
+  group_by(capitolo_icd9) %>%
+  count() %>%
+  arrange(desc(n))
+
+count_diag_capitoli <- count_diag_capitoli_db %>%
+  collect()
+
+count_diag_capitoli <- count_diag_capitoli %>%
+  mutate(perc = round(n / n_ricoveri, digits = 2))
+
 # Disconnect
 disconnect(conn)
 
@@ -439,6 +473,7 @@ predictors_df <- bind_rows(predictors, .id = "variable_name")
 wb <- createWorkbook()
 addWorksheet(wb, "Predittori")
 addWorksheet(wb, "Comorbidità - gruppi ICD-9-CM")
+addWorksheet(wb, "Comorbidità - capitoli ICD-9-CM")
 
 writeData(wb,sheet = "Predittori", data.frame("n_ricoveri" = n_ricoveri), borders = "all", borderColour = "#999999",
           headerStyle = createStyle(border = c("top", "bottom", "left", "right"), borderColour = "#999999", textDecoration = "bold"))
@@ -451,6 +486,10 @@ setColWidths(wb,sheet = "Predittori",cols = 1:ncol(predictors_df), widths = "aut
 writeData(wb,sheet = "Comorbidità - gruppi ICD-9-CM", count_diag, borders = "all", borderColour = "#999999",
           headerStyle = createStyle(border = c("top", "bottom", "left", "right"), borderColour = "#999999", textDecoration = "bold"))
 setColWidths(wb,sheet = "Comorbidità - gruppi ICD-9-CM",cols = 1:ncol(count_diag), widths = "auto")
+
+writeData(wb,sheet = "Comorbidità - capitoli ICD-9-CM", count_diag_capitoli, borders = "all", borderColour = "#999999",
+          headerStyle = createStyle(border = c("top", "bottom", "left", "right"), borderColour = "#999999", textDecoration = "bold"))
+setColWidths(wb,sheet = "Comorbidità - capitoli ICD-9-CM",cols = 1:ncol(count_diag_capitoli), widths = "auto")
 
 file_name <- file.path(outputFolder, paste(databaseId, "predittori-CASI.xlsx", sep = "-"))
 saveWorkbook(wb, file_name, overwrite = TRUE)
