@@ -84,7 +84,7 @@ SELECT
 	all_diag.icd9_group,
 	all_diag.icd9_group_name,
 	COUNT(*) AS n_diagnosi
-INTO @results_schema.omop_sepsis_icd9_diagnosis_cases
+INTO @results_schema.omop_sepsis_icd9_diagnosis
 FROM (
 	SELECT DISTINCT
 		r.visit_occurrence_id,
