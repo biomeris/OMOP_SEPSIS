@@ -278,6 +278,7 @@ ON #Codesets(concept_id);
 -- Cohort: Ricoveri
 ---------------------------------------------------------
 SELECT 
+  ROW_NUMBER() OVER (ORDER BY vo.person_id, vo.visit_start_date) as row_id,
   vo.visit_occurrence_id,
 	vo.person_id,
 	vo.visit_concept_id,
@@ -312,6 +313,7 @@ CREATE INDEX idx_ricoveri_person ON #ricoveri_tmp(person_id);
 -- Measurement filtrati
 ---------------------------------------------------------
 SELECT 
+    r.row_id,
     r.visit_occurrence_id,
     r.person_id,
     cs.codeset_id,
@@ -341,6 +343,7 @@ SELECT
 INTO #Baseline
 FROM (
     SELECT 
+        mf.row_id,
         mf.visit_occurrence_id,
         mf.person_id,
         mf.codeset_id,
@@ -375,6 +378,7 @@ SELECT *
 INTO #Post
 FROM (
     SELECT
+        mf.row_id,
         mf.visit_occurrence_id,
         mf.person_id,
         mf.codeset_id,

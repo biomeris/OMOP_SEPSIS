@@ -1,5 +1,5 @@
 SELECT 
-    b.person_id as row_id, 
+    b.row_id as row_id, 
     (cs.codeset_id + 10000000) as covariate_id,
     b.measurement_concept_id,
     p.post_value - b.baseline_value AS covariate_value,

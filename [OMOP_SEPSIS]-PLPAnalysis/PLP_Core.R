@@ -119,7 +119,7 @@ populationSettings <- createStudyPopulationSettings(
 splitSettings <- createDefaultSplitSetting(
   trainFraction = 0.75,
   testFraction = 0.25,
-  type = 'stratified',
+  type = 'person',
   nfold = 5,
   splitSeed = 34568
 )
