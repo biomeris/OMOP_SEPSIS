@@ -25,4 +25,8 @@ cohortTable <- "..." #Prefix for table created by the analysis
 databaseId <- "..." #Identifier for result folder
 resultsDatabaseSchema <- cohortDatabaseSchema
 
+# set TRUE only the first time (creates ricoveri_tmp in resultsDatabaseSchema),
+# or after regenerating the ricoveri cohort (id 2)
+createRicoveriTable <- FALSE
+
 #source("PLP_Core.R")

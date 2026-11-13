@@ -1,88 +1,58 @@
 # Funzione custom per covariate procedure invasive
 getInvasiveInpatientProcedureCovariates <- function(connection,
-                                                    tempEmulationSchema  = NULL,
                                                     cdmDatabaseSchema,
+                                                    tempEmulationSchema = NULL,
                                                     cohortTable = "#cohort_person",
-                                                    cohortIds = -1,
+                                                    cohortIds = NULL,
                                                     cdmVersion = "5",
-                                                    rowIdField = "visit_occurrence_id",
+                                                    rowIdField = "row_id",
                                                     covariateSettings,
                                                     aggregated = FALSE,
-                                                    minCharacterizationMean = 0.001) {
+                                                    minCharacterizationMean = 0.001,
+                                                    ...) {
   
   writeLines("Building custom Invasive Procedure covariates...")
+  if (aggregated) stop("Aggregated non supportato")
   
-  if (aggregated) {
-    stop("Aggregated non supportato")
-  }
-  
-  sql <- "WITH procedure_inv AS (
-    SELECT DISTINCT
-        po.visit_occurrence_id
-    FROM @cdm_database_schema.procedure_occurrence po
-    JOIN @cohort_table c
-      ON po.person_id = c.subject_id
-     AND po.procedure_date >= c.cohort_start_date
-    WHERE po.procedure_concept_id IN (
-        SELECT c2.concept_id
-        FROM @vocabulary_schema.concept c2
-        JOIN @vocabulary_schema.concept_ancestor ca 
-          ON c2.concept_id = ca.descendant_concept_id
-        WHERE ca.ancestor_concept_id IN (4301351, 4179713)  -- Surgical, Endoscopic
-          AND c2.invalid_reason IS NULL
-          AND c2.domain_id = 'Procedure'
-      )
+  renderTranslateExecuteSql(connection,
+                            sql = readSql(here::here("sql", "custom-covariates-InvProc.sql")),
+                            vocabulary_database_schema = cdmDatabaseSchema,
+                            cdm_schema = cdmDatabaseSchema,
+                            results_schema = covariateSettings$resultsDatabaseSchema,
+                            cohort_table = cohortTable,
+                            row_id_field = rowIdField,
+                            tempEmulationSchema = tempEmulationSchema
   )
-  SELECT
-  vo.visit_occurrence_id AS row_id,
-  100001 AS covariate_id,
-  CASE
-      WHEN pi.visit_occurrence_id IS NOT NULL THEN 1
-      ELSE 0
-  END AS covariate_value
-  FROM @cohort_table c
-  LEFT JOIN @cdm_database_schema.visit_occurrence vo
-    ON c.subject_id = vo.person_id
-  LEFT JOIN procedure_inv pi
-    ON vo.visit_occurrence_id = pi.visit_occurrence_id
-  WHERE c.cohort_definition_id IN (@cohort_id)
-  AND vo.visit_start_date = c.cohort_start_date ;
-  "
-
-  sql <- SqlRender::render(
-    sql,
-    cdm_database_schema = cdmDatabaseSchema,
-    cohort_table = cohortTable,
-    vocabulary_schema = cdmDatabaseSchema,
-    cohort_id = cohortIds
-    )
   
-  sql <- SqlRender::translate(
-    sql,
-    targetDialect = attr(connection, "dbms")
-    )
+  covariates <- renderTranslateQuerySql(
+    connection,
+    sql = "SELECT DISTINCT row_id,
+            1 as covariate_value,
+            13000000 AS covariate_id
+            FROM #InvProc pi",
+    snakeCaseToCamelCase = TRUE,
+    tempEmulationSchema = tempEmulationSchema
+  )
   
-  covariates <- DatabaseConnector::querySql(
-    connection, 
-    sql, 
-    snakeCaseToCamelCase = TRUE
-    )
+  covariates <- covariates[, c("rowId", "covariateId", "covariateValue")]
   
   covariateRef <- data.frame(
-    covariateId   = 100001,
-    covariateName = "Invasive Inpatient Procedure performed",
-    analysisId    = 10000,
-    conceptId     = 0
+    covariateId   = 13000000,
+    covariateName = "Invasive/surgical/endoscopic procedure performed during hospitalization",
+    analysisId    = 13000,
+    conceptId     = 0,
+    valueAsConceptId = as.numeric(NA),
+    collisions = 0L
   )
   
   analysisRef <- data.frame(
-    analysisId = 10000,
-    analysisName = "Check Invasive Inpatient Procedure",
+    analysisId = 13000,
+    analysisName = "Invasive Inpatient Procedure: performed anytime during hospital stay (admission to discharge)",
     domainId = "Procedure",
     startDay = 0,
     endDay = 0,
     isBinary = "Y",
-    missingMeansZero = "N"
+    missingMeansZero = "Y"
   )
   
   result <- Andromeda::andromeda(
@@ -97,11 +67,12 @@ getInvasiveInpatientProcedureCovariates <- function(connection,
   return(result)
 }
 
-# Funzione per creare settings
-createInvasiveProcedureSettings <- function() {
-  covariateSettings <- list(useInvasiveProcedure = TRUE)
+createInvasiveProcedureSettings <- function(resultsDatabaseSchema) {
+  covariateSettings <- list(
+    useInvasiveProcedure = TRUE,
+    resultsDatabaseSchema = resultsDatabaseSchema
+  )
   attr(covariateSettings, "fun") <- "getInvasiveInpatientProcedureCovariates"
   class(covariateSettings) <- "covariateSettings"
   return(covariateSettings)
 }
-

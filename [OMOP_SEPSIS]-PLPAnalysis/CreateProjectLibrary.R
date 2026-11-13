@@ -9,3 +9,16 @@
 
 renv::activate()
 renv::restore()
+
+
+# ----------------------------------------------------------
+# Python environment for RF, LightGBM, SVM (scikit-learn)
+# ----------------------------------------------------------
+envName <- "r-reticulate"
+
+if (!reticulate::virtualenv_exists(envName)) {
+  reticulate::virtualenv_create(envName)
+}
+reticulate::use_virtualenv(envName, required = TRUE)
+reticulate::py_install("scikit-learn==1.8.0", envname = envName)
+reticulate::py_config()   # check python path and version

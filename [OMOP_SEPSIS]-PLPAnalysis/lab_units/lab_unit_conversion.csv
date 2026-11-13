@@ -1,0 +1,49 @@
+codeset_id,source_unit_ucum,factor,note
+0,g/dL,1,
+0,g/L,0.1,altri centri
+0,mmol/L,1.611,altri centri
+1,10*6/uL,1,
+1,10*12/L,1,altri centri
+2,%,1,
+2,L/L,100,altri centri (frazione)
+3,10*3/uL,1,
+3,10*9/L,1,altri centri
+3,10*6/uL,1000,altri centri
+4,%,1,
+5,fL,1,
+6,pg,1,
+6,fmol,16.11,altri centri
+7,g/dL,1,
+7,g/L,0.1,altri centri
+7,mmol/L,1.611,altri centri
+8,%,1,
+9,10*3/uL,1,
+9,10*9/L,1,altri centri
+10,10*3/uL,1,
+10,10*9/L,1,altri centri
+11,%,1,
+12,10*3/uL,1,
+12,10*9/L,1,altri centri
+13,%,1,
+14,10*3/uL,1,
+14,10*9/L,1,altri centri
+15,%,1,
+16,10*3/uL,1,
+16,10*9/L,1,altri centri
+17,%,1,
+18,10*3/uL,1,
+18,10*9/L,1,altri centri
+19,%,1,
+20,fL,1,
+21,fL,1,
+22,10*3/uL,1,
+22,10*9/L,1,altri centri
+23,%,1,PT activity - da rivedere
+24,mg/dL,1,
+24,umol/L,0.05848,altri centri (1/17.1)
+25,mg/dL,1,
+25,umol/L,0.01131,altri centri (1/88.4)
+26,mg/dL,1,urea
+26,mmol/L,6.006,altri centri (urea in mmol/L)
+27,mg/dL,1,
+27,mg/L,0.1,altri centri

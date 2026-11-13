@@ -1,54 +1,39 @@
-# Custom Function for comorbidities at 6 months, 3 dig icd9cm
 getConditionIcd9GroupCovariateData <- function(connection,
-                                               tempEmulationSchema  = NULL,
                                                cdmDatabaseSchema,
+                                               tempEmulationSchema = NULL,
                                                cohortTable = "#cohort_person",
-                                               cohortIds = -1,
+                                               cohortIds = NULL,
                                                cdmVersion = "5",
-                                               rowIdField = "visit_occurrence_id",
+                                               rowIdField = "row_id",
                                                covariateSettings,
                                                aggregated = FALSE,
-                                               minCharacterizationMean = 0.001) {
+                                               minCharacterizationMean = 0.001,
+                                               ...) {
   
   writeLines("Building custom ICD9 group (conditions) covariates...")
+  if (aggregated) stop("Aggregated non supportato")
   
-  sql <- "
-  SELECT
-      d.visit_occurrence_id AS row_id,
-      (11000 * 1000 + CAST(d.icd9_group AS INTEGER)) AS covariate_id,
-      d.n_diagnosi AS covariate_value,
-      d.icd9_group,
-      d.icd9_group_name,
-      c.concept_id
-  FROM
-      @results_schema.omop_sepsis_icd9_diagnosis d
-          LEFT JOIN @cdm_database_schema.concept c
-        ON c.vocabulary_id = 'ICD9CM'
-       AND c.concept_class_id = '3-dig nonbill code'
-       AND c.concept_code = CAST(d.icd9_group AS VARCHAR)
-       AND c.invalid_reason IS NULL;
-  "
   
-  sql <- SqlRender::render(
-    sql,
-    results_schema = resultsDatabaseSchema,
-    cdm_database_schema = cdmDatabaseSchema
+  renderTranslateExecuteSql(connection,
+                            sql = readSql(here::here("sql", "custom-covariates-icd9group.sql")),
+                            cdm_schema = cdmDatabaseSchema,
+                            results_schema = covariateSettings$resultsDatabaseSchema,
+                            cohort_table = cohortTable,
+                            row_id_field = rowIdField,
+                            tempEmulationSchema = tempEmulationSchema
   )
   
-  sql <- SqlRender::translate(
-    sql,
-    targetDialect = attr(connection, "dbms"))
-  
-  covariates <- DatabaseConnector::querySql(
+  covariates <- renderTranslateQuerySql(
     connection,
-    sql,
-    snakeCaseToCamelCase = TRUE
+    sql = "SELECT * FROM #ICD9CMGroup",
+    snakeCaseToCamelCase = TRUE,
+    tempEmulationSchema = tempEmulationSchema
   )
   
   unique_ids <- unique(
     covariates[, c("covariateId", "icd9Group", "icd9GroupName", 'conceptId')]
   )
-
+  
   covariateRef <- data.frame(
     covariateId   = unique_ids$covariateId,
     covariateName = paste0(
@@ -57,17 +42,19 @@ getConditionIcd9GroupCovariateData <- function(connection,
       unique_ids$icd9GroupName
     ),
     analysisId    = 11000,
-    conceptId     = unique_ids$conceptId
+    conceptId     = unique_ids$conceptId,
+    valueAsConceptId = as.numeric(NA),
+    collisions = 0L
   )
   
   analysisRef <- data.frame(
     analysisId = 11000,
-    analysisName = "ICD9 group counts prior 180d (pre-admission)",
+    analysisName = "ICD9 group (3-digit): n. diagnoses in prior 180d (pre-admission)",
     domainId = "Condition",
     startDay = -180,
     endDay = 0,
     isBinary = "N",
-    missingMeansZero = "N"
+    missingMeansZero = "Y"
   )
   
   covariates <- covariates[, c("rowId", "covariateId", "covariateValue")]
@@ -86,9 +73,11 @@ getConditionIcd9GroupCovariateData <- function(connection,
   return(result)
 }
 
-
-createConditionIcd9GroupSettings <- function() {
-  settings <- list(useConditionIcd9Group = TRUE)
+createConditionIcd9GroupSettings <- function(resultsDatabaseSchema) {
+  settings <- list(
+    useConditionIcd9Group = TRUE,
+    resultsDatabaseSchema = resultsDatabaseSchema
+  )
   attr(settings, "fun") <- "getConditionIcd9GroupCovariateData"
   class(settings) <- "covariateSettings"
   settings
