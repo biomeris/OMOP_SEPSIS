@@ -45,6 +45,8 @@ if (createRicoveriTable) {
   disconnect(conn)
 }
 
+# Function to fix cohort end in the cohort table
+source("fixCohortEnd.R")
 # ------------------------------------------------------------------------------
 # Data and Feature Extraction
 # ------------------------------------------------------------------------------
@@ -105,11 +107,19 @@ plpData <- getPlpData(
 
 savePlpData(plpData, file.path(outputFolder, "plpData"))
 
+# Fixing cohort_end_date from ricoveri_tmp table
+plpData <- fixCohortEnd(plpData, connectionDetails, resultsSchema = resultsDatabaseSchema)
+
 # ------------------------------------------------------------------------------
 # Model training (person split or time split)
 # ------------------------------------------------------------------------------
 populationSettings <- createStudyPopulationSettings(
-  removeSubjectsWithPriorOutcome = F)
+  riskWindowStart = 0,  startAnchor = "cohort start", 
+  riskWindowEnd   = 0,  endAnchor   = "cohort end",
+  firstExposureOnly = FALSE, washoutPeriod = 0,
+  removeSubjectsWithPriorOutcome = FALSE,
+  requireTimeAtRisk = FALSE, minTimeAtRisk = 0,
+  binary = TRUE, includeAllOutcomes = TRUE)
 
 studySeed <- 34568
 
@@ -232,7 +242,7 @@ lrResults <- runPlp(
   ),
   saveDirectory = runDir("LR"))
 
-#viewPlp(lrResults)
+viewPlp(lrResults)
 
 if (interactive()) { 
 
