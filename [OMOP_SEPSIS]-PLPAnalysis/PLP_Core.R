@@ -238,7 +238,7 @@ lrResults <- runPlp(
     runFeatureEngineering = T,
     runPreprocessData = T,
     runModelDevelopment = T,
-    runCovariateSummary = T
+    runCovariateSummary = F
   ),
   saveDirectory = runDir("LR"))
 
@@ -294,7 +294,7 @@ rfResults <- runPlp(
     runFeatureEngineering = T,
     runPreprocessData = T,
     runModelDevelopment = T,
-    runCovariateSummary = T
+    runCovariateSummary = F
   ),
   saveDirectory = runDir("RF"))
 
@@ -343,7 +343,7 @@ LightGBMResults <- runPlp(
     runFeatureEngineering = T,
     runPreprocessData = T,
     runModelDevelopment = T,
-    runCovariateSummary = T
+    runCovariateSummary = F
   ),
   saveDirectory = runDir("LightGBM"))
 
@@ -380,6 +380,6 @@ SVMResults <- runPlp(
     runFeatureEngineering = T,
     runPreprocessData = T,
     runModelDevelopment = T,
-    runCovariateSummary = T
+    runCovariateSummary = F
   ),
   saveDirectory = runDir("SVM")) 

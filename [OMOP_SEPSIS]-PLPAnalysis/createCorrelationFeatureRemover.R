@@ -78,10 +78,8 @@ implementCorrelationFeatureRemover <- function(trainData,
     )
   )
   
-  attr(trainData$covariateData, "metaData")$featureEngineering <- listAppend(
-    attr(trainData$covariateData, "metaData")$featureEngineering,
+  attr(trainData$covariateData, "metaData")$featureEngineering[["correlationFeatureRemover"]] <-
     featureEngineering
-  )
   
   delta <- Sys.time() - start
   
