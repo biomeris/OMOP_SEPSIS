@@ -1,11 +1,11 @@
 ---------------------------------------------------------
--- Cleanup iniziale
+-- Initial cleanup
 ---------------------------------------------------------
 IF OBJECT_ID('#RicoveriRowMap', 'U') IS NOT NULL DROP TABLE #RicoveriRowMap;
 IF OBJECT_ID('#InvProc', 'U') IS NOT NULL DROP TABLE #InvProc;
 
 ---------------------------------------------------------
--- Aggancio row_id corrente 
+-- Map current row_id to the index admission in ricoveri_tmp
 ---------------------------------------------------------
 SELECT row_id, person_id, visit_occurrence_id, visit_start_date, visit_end_date
 INTO #RicoveriRowMap
@@ -28,7 +28,9 @@ FROM (
 WHERE rn = 1;
 
 ---------------------------------------------------------
--- InvProc
+-- Invasive procedures on days 0-3 from admission
+-- (prediction at end of day 3, same window as the 48h labs
+-- with day 1/3 fallback)
 ---------------------------------------------------------
 SELECT DISTINCT
     r.row_id, 
@@ -42,7 +44,7 @@ INTO #InvProc
 FROM #RicoveriRowMap r
 JOIN @cdm_schema.procedure_occurrence po
     ON r.person_id = po.person_id
-   AND po.procedure_date BETWEEN r.visit_start_date AND r.visit_end_date
+   AND po.procedure_date BETWEEN r.visit_start_date AND DATEADD(day, 3, r.visit_start_date)
 WHERE po.procedure_concept_id IN (
     SELECT c2.concept_id
     FROM @vocabulary_database_schema.concept c2

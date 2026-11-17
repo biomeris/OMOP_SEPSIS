@@ -1,4 +1,4 @@
-# Funzione custom per covariate procedure invasive
+# Custo function to extract invasive procedure
 getInvasiveInpatientProcedureCovariates <- function(connection,
                                                     cdmDatabaseSchema,
                                                     tempEmulationSchema = NULL,
@@ -38,7 +38,7 @@ getInvasiveInpatientProcedureCovariates <- function(connection,
   
   covariateRef <- data.frame(
     covariateId   = 13000000,
-    covariateName = "Invasive/surgical/endoscopic procedure performed during hospitalization",
+    covariateName = "Invasive/surgical/endoscopic procedure performed within day 3 of admission",
     analysisId    = 13000,
     conceptId     = 0,
     valueAsConceptId = as.numeric(NA),
@@ -47,10 +47,10 @@ getInvasiveInpatientProcedureCovariates <- function(connection,
   
   analysisRef <- data.frame(
     analysisId = 13000,
-    analysisName = "Invasive Inpatient Procedure: performed anytime during hospital stay (admission to discharge)",
+    analysisName = "Invasive Inpatient Procedure: days 0-3 from admission",
     domainId = "Procedure",
     startDay = 0,
-    endDay = 0,
+    endDay = 3,
     isBinary = "Y",
     missingMeansZero = "Y"
   )
