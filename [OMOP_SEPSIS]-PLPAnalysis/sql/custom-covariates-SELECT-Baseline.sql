@@ -1,21 +1,16 @@
-SELECT 
-    b.row_id as row_id, 
-    (cs.codeset_id + 20000000) as covariate_id,
+-- Baseline lab value (day 0). Independent of later measurements:
+-- the value is kept even if the test is not repeated on days 1-3.
+SELECT
+    b.row_id AS row_id,
+    (cs.codeset_id + 20000000) AS covariate_id,
     b.baseline_value AS covariate_value,
     cs.codeset_name,
-    cs.codeset_id,
-    p.rn
+    cs.codeset_id
 FROM #Baseline b
-LEFT JOIN #Post p
-    ON b.visit_occurrence_id = p.visit_occurrence_id
-   AND b.codeset_id = p.codeset_id
-   AND b.unit_concept_id = p.unit_concept_id
-   AND p.rn = 1
 LEFT JOIN (
     SELECT DISTINCT codeset_id, codeset_name
     FROM #Codesets
-) cs 
-ON b.codeset_id = cs.codeset_id
-   WHERE p.post_value IS NOT NULL
-   AND b.baseline_value IS NOT NULL
-   AND b.rn=1;
+) cs
+    ON b.codeset_id = cs.codeset_id
+WHERE b.baseline_value IS NOT NULL
+  AND b.rn = 1;
