@@ -261,17 +261,20 @@ print(plotF1Measure(lrResults, typeColumn = "evaluation"))
 # RANDOM FOREST
 
 rfModel <- setRandomForest(
-  ntrees = list(100, 500),
+  ntrees = list(500),
   criterion = list("gini"),
-  maxDepth = list(4, 10, 17),
-  minSamplesSplit = list(2, 5),
-  minSamplesLeaf = list(1, 10),
+  maxDepth = list(6, 10, 17),
+  minSamplesSplit = list(2),
+  minSamplesLeaf = list(10, 50, 100),
   minWeightFractionLeaf = list(0),
-  mtries = list("sqrt", "log2"),
+  mtries = list("sqrt", 0.3),
+  maxLeafNodes = list(NULL),
   minImpurityDecrease = list(0),
   bootstrap = list(TRUE),
-  maxSamples = list(NULL, 0.9),
+  maxSamples = list(NULL),
   oobScore = list(FALSE),
+  nJobs = list(-1),          # all cores
+  classWeight = list(NULL),
   seed = studySeed
 )
 
