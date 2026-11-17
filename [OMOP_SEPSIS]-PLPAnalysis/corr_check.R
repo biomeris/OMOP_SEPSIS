@@ -37,7 +37,7 @@ short_names <- name_map[colnames(cor_matrix)] %>%
   gsub("Delta within 48h ± 24h from baseline:", "Δ ", .) %>%
   gsub("Baseline Measurement: ", "BL ", .) %>%
   gsub("Chapter (\\d+):.*", "Ch\\1", .) %>%
-  gsub(".*Invasive.*procedure.*hospitalization.*", "invproc", .)
+  gsub("^Invasive.*procedure.*", "invproc", .)
 dimnames(cor_matrix) <- list(short_names, short_names)
 
 # heatmap, hclust order

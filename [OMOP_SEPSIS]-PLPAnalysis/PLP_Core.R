@@ -104,7 +104,6 @@ plpData <- getPlpData(
   restrictPlpDataSettings = restrictPlpDataSettings
 )
 
-
 savePlpData(plpData, file.path(outputFolder, "plpData"))
 
 # Fixing cohort_end_date from ricoveri_tmp table
@@ -114,11 +113,11 @@ plpData <- fixCohortEnd(plpData, connectionDetails, resultsSchema = resultsDatab
 # Model training (person split or time split)
 # ------------------------------------------------------------------------------
 populationSettings <- createStudyPopulationSettings(
-  riskWindowStart = 0,  startAnchor = "cohort start", 
+  riskWindowStart = 4,  startAnchor = "cohort start",
   riskWindowEnd   = 0,  endAnchor   = "cohort end",
   firstExposureOnly = FALSE, washoutPeriod = 0,
   removeSubjectsWithPriorOutcome = FALSE,
-  requireTimeAtRisk = FALSE, minTimeAtRisk = 0,
+  requireTimeAtRisk = TRUE, minTimeAtRisk = 1,
   binary = TRUE, includeAllOutcomes = TRUE)
 
 studySeed <- 34568
@@ -306,7 +305,7 @@ if (interactive()) {
 rfResults$model$covariateImportance %>%
   dplyr::filter(covariateValue != 0) %>%
   dplyr::arrange(dplyr::desc(abs(covariateValue))) %>%
-  print(n=30)
+  print()
 
   print(plotPrecisionRecall(rfResults, typeColumn = "evaluation"))
   print(plotSparseRoc(rfResults, typeColumn = "evaluation"))
@@ -314,31 +313,31 @@ rfResults$model$covariateImportance %>%
   print(plotF1Measure(rfResults, typeColumn = "evaluation"))
 }
 # ______________________________________________________________________________
-# Light Gradient Boosting Machine
-LightGBMModel <- setGradientBoostingMachine(
-  ntrees = c(100, 300),
-  nthread = 20,
+# Gradient Boosting Machine
+GBMModel <- setGradientBoostingMachine(
+  ntrees         = 1000,   
   earlyStopRound = 25,
-  maxDepth = c(4, 6, 8),
+  maxDepth       = 5,
+  learnRate      = 0.05,
   minChildWeight = 1,
-  learnRate = c(0.05, 0.1, 0.3),
   scalePosWeight = 1,
-  lambda = 1,
-  alpha = 0,
-  seed = studySeed
+  lambda         = 1,
+  alpha          = 0,
+  nthread        = max(1, parallel::detectCores() - 1),
+  seed           = studySeed
 )
 
-LightGBMResults <- runPlp(
+GBMResults <- runPlp(
   plpData = plpData,
   outcomeId = 1,
-  analysisId = 'singleDemo_LightGBM',
-  analysisName = 'OMOP_SEPSIS_LightGBM',
+  analysisId = 'singleDemo_GBM',
+  analysisName = 'OMOP_SEPSIS_GBM',
   populationSettings = populationSettings,
   splitSettings = splitSettings,
   sampleSettings = sampleSettings,
   featureEngineeringSettings = featureEngineeringSettings,
   preprocessSettings = preprocessSettings,
-  modelSettings = LightGBMModel,
+  modelSettings = GBMModel,
   logSettings = createLogSettings(),
   executeSettings = createExecuteSettings(
     runSplitData = T,
@@ -348,23 +347,24 @@ LightGBMResults <- runPlp(
     runModelDevelopment = T,
     runCovariateSummary = F
   ),
-  saveDirectory = runDir("LightGBM"))
+  saveDirectory = runDir("GBM"))
 
 # ______________________________________________________________________________
 # Support vector machine
 
 SVMModel <- setSVM(
-  C = list(1, 0.9, 2, 0.1),
-  kernel = list("rbf"),
-  degree = list(1, 3, 5),
-  gamma = list("scale", 1e-04, 3e-05, 0.001, 0.01, 0.25),
-  coef0 = list(0),
-  shrinking = list(TRUE),
-  tol = list(0.001),
-  classWeight = list(NULL),
-  cacheSize = 500,
-  seed = studySeed
+  C       = list(1),
+  kernel  = list("rbf"),
+  degree  = list(3),
+  gamma   = list("scale"),
+  coef0   = list(0),
+  shrinking   = list(TRUE),
+  tol         = list(0.001),
+  classWeight = list("balanced"),   # reweight the 2% outcome class
+  cacheSize   = 2000,
+  seed        = studySeed
 )
+
 SVMResults <- runPlp(
   plpData = plpData,
   outcomeId = 1,
