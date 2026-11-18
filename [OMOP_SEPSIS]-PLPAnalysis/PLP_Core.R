@@ -241,7 +241,16 @@ lrResults <- runPlp(
   ),
   saveDirectory = runDir("LR"))
 
+#shiny app for viewing interactive plots of the performance and the settings
 viewPlp(lrResults)
+
+#Prediction for single-patient
+lrResults$prediction
+
+#Performance threshold dependent
+lrResults$performanceEvaluation$thresholdSummary
+
+
 
 if (interactive()) { 
 
